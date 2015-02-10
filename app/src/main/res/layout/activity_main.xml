@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="polimi.it.trovalintruso.MainActivity"
+    tools:context="polimi.it.trovalintruso.SettingsActivity"
     android:id="@+id/main_area">
 
     <LinearLayout
@@ -42,6 +42,14 @@
             android:layout_marginBottom="20dip"
             android:layout_marginTop="20dip"
             android:text="Schermate"/>
+
+        <Button
+            android:id="@+id/button_start_game"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dip"
+            android:layout_marginTop="20dip"
+            android:text="Inizia a giocare"/>
 
 
     </LinearLayout>

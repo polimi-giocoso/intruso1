@@ -1,48 +1,69 @@
 package polimi.it.trovalintruso.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Created by poool on 09/02/15.
  */
-public class Settings {
+public class Settings implements Serializable {
 
     public static enum ObjectsForPage { Four, Five, Six }
 
-    private ObjectsForPage numOfObjects;
-    private int numOfScreens;
-    private Boolean timeLimitEnabled;
-    private Boolean randomCategory;
+    public static enum Category { Casuale, Colori, Forme}
+
+    private ObjectsForPage _numOfObjects;
+    private int _numOfScreens;
+    private Boolean _timeLimitEnabled;
+    private Category _category;
+
+    private Boolean _singlePlayer;
+
+    public Settings() {
+        _numOfObjects = ObjectsForPage.Four;
+        _numOfScreens = 2;
+        _timeLimitEnabled = false;
+        _category = Category.Casuale;
+    }
 
     public ObjectsForPage getNumOfObjects() {
-        return numOfObjects;
+        return _numOfObjects;
     }
 
     public void setNumOfObjects(ObjectsForPage numOfObjects) {
-        this.numOfObjects = numOfObjects;
+        this._numOfObjects = numOfObjects;
     }
 
     public Boolean getTimeLimitEnabled() {
-        return timeLimitEnabled;
+        return _timeLimitEnabled;
     }
 
     public void setTimeLimitEnabled(Boolean timeLimit) {
-        this.timeLimitEnabled = timeLimit;
+        this._timeLimitEnabled = timeLimit;
     }
 
     public int getNumOfScreens() {
-        return numOfScreens;
+        return _numOfScreens;
     }
 
     public void setNumOfScreens(int numOfScreens) {
-        this.numOfScreens = numOfScreens;
+        this._numOfScreens = numOfScreens;
     }
 
-    public Boolean getRandomCategory() {
-        return randomCategory;
+    public Category getCategory() {
+        return _category;
     }
 
-    public void setRandomCategory(Boolean randomCategory) {
-        this.randomCategory = randomCategory;
+    public void setCategory(Category category) {
+        this._category = category;
     }
 
+    public Boolean get_singlePlayer() {
+        return _singlePlayer;
+    }
+
+    public void set_singlePlayer(Boolean _singlePlayer) {
+        this._singlePlayer = _singlePlayer;
+    }
 
 }
