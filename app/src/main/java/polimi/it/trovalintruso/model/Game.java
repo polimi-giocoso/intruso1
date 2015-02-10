@@ -3,6 +3,8 @@ package polimi.it.trovalintruso.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.joda.time.Interval;
+
 import java.util.ArrayList;
 
 /**
@@ -29,6 +31,12 @@ public class Game implements Parcelable {
 
     public Settings getSettings() {
         return _settings;
+    }
+
+    //methods
+
+    public Interval getGameTime() {
+        return null;
     }
 
     public Screen getActiveScreen() {
@@ -72,7 +80,7 @@ public class Game implements Parcelable {
                     Element el = new Element();
                     el.set_drawable_name("sample_" + j);
                     if(j == 0)
-                        el.set_is_target(true);
+                        el.set_isTarget(true);
                     objects.add(el);
                 }
             }
@@ -82,7 +90,7 @@ public class Game implements Parcelable {
                     int idx = j + 4;
                     el.set_drawable_name("sample_" + idx);
                     if(j == 0)
-                        el.set_is_target(true);
+                        el.set_isTarget(true);
                     objects.add(el);
                 }
             }

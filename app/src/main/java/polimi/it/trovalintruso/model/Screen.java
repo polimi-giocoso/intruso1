@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +16,7 @@ public class Screen implements Parcelable {
     private ArrayList<Element> _elements;
     private DateTime _start;
     private DateTime _end;
-    private int _incorrect_attempts;
+    private int _incorrectAttempts;
 
     //getters & setters
 
@@ -30,7 +29,7 @@ public class Screen implements Parcelable {
     }
 
     public Screen() {
-        _incorrect_attempts = 0;
+        _incorrectAttempts = 0;
     }
 
     //game methods
@@ -44,7 +43,7 @@ public class Screen implements Parcelable {
     }
 
     public void error() {
-        _incorrect_attempts++;
+        _incorrectAttempts++;
     }
 
     public void completed() {
@@ -87,14 +86,14 @@ public class Screen implements Parcelable {
             dest.writeLong(0);*/
         dest.writeValue(_start);
         dest.writeValue(_end);
-        dest.writeInt(_incorrect_attempts);
+        dest.writeInt(_incorrectAttempts);
         dest.writeList(_elements);
     }
 
     private void readFromParcel(Parcel in ) {
         _start = (DateTime) in.readValue(DateTime.class.getClassLoader());
         _end = (DateTime) in.readValue(DateTime.class.getClassLoader());
-        _incorrect_attempts = in.readInt();
+        _incorrectAttempts = in.readInt();
         _elements = in.readArrayList(Element.class.getClassLoader());
     }
 }
