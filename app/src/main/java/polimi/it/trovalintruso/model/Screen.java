@@ -19,9 +19,21 @@ public class Screen implements Parcelable {
     private DateTime _end;
     private int _incorrect_attempts;
 
+    //getters & setters
+
+    public ArrayList<Element> get_elements() {
+        return _elements;
+    }
+
+    public void set_elements(ArrayList<Element> _elements) {
+        this._elements = _elements;
+    }
+
     public Screen() {
         _incorrect_attempts = 0;
     }
+
+    //game methods
 
     public void initialize(ArrayList<Element> objects) {
         _elements = objects;
@@ -65,15 +77,23 @@ public class Screen implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(_start.getMillis());
-        dest.writeLong(_end.getMillis());
+        /*if(_start != null)
+            dest.writeLong(_start.getMillis());
+        else
+            dest.writeLong(0);
+        if(_end != null)
+            dest.writeLong(_end.getMillis());
+        else
+            dest.writeLong(0);*/
+        dest.writeValue(_start);
+        dest.writeValue(_end);
         dest.writeInt(_incorrect_attempts);
         dest.writeList(_elements);
     }
 
     private void readFromParcel(Parcel in ) {
-        _start = new DateTime(in.readLong());
-        _end = new DateTime(in.readLong());
+        _start = (DateTime) in.readValue(DateTime.class.getClassLoader());
+        _end = (DateTime) in.readValue(DateTime.class.getClassLoader());
         _incorrect_attempts = in.readInt();
         _elements = in.readArrayList(Element.class.getClassLoader());
     }

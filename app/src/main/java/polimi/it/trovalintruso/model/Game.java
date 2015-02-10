@@ -14,6 +14,7 @@ public class Game implements Parcelable {
     private ArrayList<Screen> _screens;
     private int _activeScreen;
 
+    //TODO delete demo settings initialization
     public Game() {
         _settings = new Settings();
         _settings.set_singlePlayer(true);
@@ -34,10 +35,17 @@ public class Game implements Parcelable {
         return _screens.get(_activeScreen);
     }
 
-    public void goToNextScreen() {
-        Screen s = _screens.get(_activeScreen);
-        s.completed();
-        _activeScreen++;
+    public Boolean goToNextScreen() {
+        if(_activeScreen < _settings.getNumOfScreens() - 1) {
+            _activeScreen++;
+            return true;
+        }
+        else
+            return false;
+    }
+
+    public Boolean isLastScreen(){
+        return _activeScreen == _settings.getNumOfScreens() - 1;
     }
 
     public void initialize() {
@@ -46,10 +54,40 @@ public class Game implements Parcelable {
         _screens = new ArrayList<Screen>();
         for(int i = 0; i < _settings.getNumOfScreens(); i++) {
 
-           Screen screen = new Screen();
+            Screen screen = new Screen();
+            _screens.add(screen);
         }
-
+        DemoData();
         _activeScreen = 0;
+    }
+
+    //TODO change with Category manager
+    private void DemoData() {
+        for(int i = 0; i < _settings.getNumOfScreens(); i++) {
+
+            Screen screen = _screens.get(i);
+            ArrayList<Element> objects = new ArrayList<Element>();
+            if(i == 0) {
+                for(int j = 0; j < _settings.getNumOfObjects(); j++) {
+                    Element el = new Element();
+                    el.set_drawable_name("sample_" + j);
+                    if(j == 0)
+                        el.set_is_target(true);
+                    objects.add(el);
+                }
+            }
+            else {
+                for(int j = 0; j < _settings.getNumOfObjects(); j++) {
+                    Element el = new Element();
+                    int idx = j + 4;
+                    el.set_drawable_name("sample_" + idx);
+                    if(j == 0)
+                        el.set_is_target(true);
+                    objects.add(el);
+                }
+            }
+            screen.set_elements(objects);
+        }
     }
 
     //parcelable implementation

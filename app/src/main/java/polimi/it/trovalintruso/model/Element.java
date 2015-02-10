@@ -8,8 +8,30 @@ import android.os.Parcelable;
  */
 public class Element implements Parcelable {
 
-    private String _file;
+    private String _drawable_identifier;
     private Boolean _is_target;
+
+    public Element() {
+        _is_target = false;
+    }
+
+    //getters & setters
+
+    public String get_drawable_name() {
+        return _drawable_identifier;
+    }
+
+    public void set_drawable_name(String _file) {
+        this._drawable_identifier = _file;
+    }
+
+    public Boolean get_is_target() {
+        return _is_target;
+    }
+
+    public void set_is_target(Boolean _is_target) {
+        this._is_target = _is_target;
+    }
 
     //Parcelable implementation
 
@@ -33,12 +55,12 @@ public class Element implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(_file);
+        dest.writeString(_drawable_identifier);
         dest.writeByte((byte) (_is_target ? 1 : 0));
     }
 
     private void readFromParcel(Parcel in ) {
-        _file = in.readString();
+        _drawable_identifier = in.readString();
         _is_target = in.readByte() != 0;
     }
 

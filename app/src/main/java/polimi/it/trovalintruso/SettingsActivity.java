@@ -3,13 +3,15 @@ package polimi.it.trovalintruso;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import butterknife.ButterKnife;
-
 import butterknife.InjectView;
+import butterknife.OnClick;
+
 import polimi.it.trovalintruso.model.Game;
 import polimi.it.trovalintruso.model.Settings;
 
@@ -26,28 +28,24 @@ public class SettingsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         context = this;
         initializeUI();
         initializeGame();
     }
 
+    private void initializeUI() {
+        ButterKnife.inject(this);
+    }
+
     private void initializeGame() {
         gameSettings = new Settings();
-        game = new Game(gameSettings);
+        game = new Game();
     }
 
-    private void initializeUI() {
-        start_game.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startGame();
-            }
-        });
-    }
-
-    private void startGame() {
+    @OnClick(R.id.button_start_game) void startGame() {
         game.initialize();
-        if(gameSettings.get_singlePlayer()) {
+        if(game.getSettings().get_singlePlayer()) {
             Intent intent = new Intent(context, ScreenActivity.class);
             String pkg = context.getPackageName();
             intent.putExtra(pkg + ".game", game);
@@ -56,7 +54,6 @@ public class SettingsActivity extends Activity {
         else {
 
         }
-
     }
 
 

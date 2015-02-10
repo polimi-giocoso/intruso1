@@ -15,8 +15,8 @@ public class Settings implements Parcelable {
     private int _numOfObjects;
     private int _numOfScreens;
     private Boolean _timeLimitEnabled;
+    private int _timeLimit;
     //private Category _category;
-
     private Boolean _singlePlayer;
 
     public Settings() {
@@ -50,20 +50,20 @@ public class Settings implements Parcelable {
         this._numOfScreens = numOfScreens;
     }
 
-    /*public Category getCategory() {
-        return _category;
+    public int get_timeLimit() {
+        return _timeLimit;
     }
 
-    public void setCategory(Category category) {
-        this._category = category;
-    }*/
+    public void set_timeLimit(int _timeLimit) {
+        this._timeLimit = _timeLimit;
+    }
 
     public Boolean get_singlePlayer() {
         return _singlePlayer;
     }
 
-    public void set_singlePlayer(Boolean _singlePlayer) {
-        this._singlePlayer = _singlePlayer;
+    public void set_singlePlayer(Boolean singlePlayer) {
+        this._singlePlayer = singlePlayer;
     }
 
     //Parcelable implementation
@@ -91,12 +91,14 @@ public class Settings implements Parcelable {
         dest.writeInt(_numOfScreens);
         dest.writeInt(_numOfObjects);
         dest.writeByte((byte) (_timeLimitEnabled ? 1 : 0));
+        dest.writeByte((byte) (_singlePlayer ? 1 : 0));
     }
 
     private void readFromParcel(Parcel in ) {
         _numOfScreens = in.readInt();
         _numOfObjects = in.readInt();
         _timeLimitEnabled = in.readByte() != 0;
+        _singlePlayer = in.readByte() != 0;
     }
 
 }
