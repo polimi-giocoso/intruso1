@@ -1,12 +1,14 @@
 package polimi.it.trovalintruso.model;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
 /**
  * Created by poool on 09/02/15.
  */
-public class Game implements Serializable {
+public class Game implements Parcelable {
 
     private Settings _settings;
     private ArrayList<Screen> _screens;
@@ -15,7 +17,7 @@ public class Game implements Serializable {
     public Game() {
         _settings = new Settings();
         _settings.set_singlePlayer(true);
-        _settings.setNumOfObjects(Settings.ObjectsForPage.Four);
+        _settings.setNumOfObjects(4);
         _settings.setNumOfScreens(2);
         _settings.setTimeLimitEnabled(false);
     }
@@ -50,4 +52,36 @@ public class Game implements Serializable {
         _activeScreen = 0;
     }
 
+    //parcelable implementation
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public Game(Parcel in ) {
+        readFromParcel( in );
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Game createFromParcel(Parcel in ) {
+            return new Game( in );
+        }
+
+        public Game[] newArray(int size) {
+            return new Game[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(_activeScreen);
+        dest.writeList(_screens);
+        dest.writeParcelable(_settings, flags);
+    }
+
+    private void readFromParcel(Parcel in ) {
+        _activeScreen = in.readInt();
+        _screens = in.readArrayList(Screen.class.getClassLoader());
+        _settings = in.readParcelable(Settings.class.getClassLoader());
+    }
 }
