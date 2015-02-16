@@ -20,7 +20,7 @@ public class Game implements Parcelable {
     public Game() {
         _settings = new Settings();
         _settings.set_singlePlayer(true);
-        _settings.setNumOfObjects(4);
+        _settings.setNumOfObjects(5);
         _settings.setNumOfScreens(2);
         _settings.setTimeLimitEnabled(false);
     }
@@ -41,6 +41,10 @@ public class Game implements Parcelable {
 
     public Screen getActiveScreen() {
         return _screens.get(_activeScreen);
+    }
+
+    public ArrayList<Screen> getScreens() {
+        return _screens;
     }
 
     public Boolean goToNextScreen() {

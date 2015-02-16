@@ -18,8 +18,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:name=".ScreenActivity"
             android:label="@string/title_activity_screen" >
+        </activity>
+        <activity
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:name=".ResultsActivity"
+            android:label="@string/title_activity_results" >
         </activity>
     </application>
 

@@ -8,7 +8,11 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import polimi.it.trovalintruso.R;
 import polimi.it.trovalintruso.model.Element;
 
 /**

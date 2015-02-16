@@ -4,7 +4,12 @@
     <string name="app_name">Trova l\'intruso</string>
     <string name="next_level">Livello successivo</string>
     <string name="end_game">Fine</string>
-
     <string name="title_activity_screen">Screen</string>
+    <string name="title_activity_results">ResultsActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="play_again">Gioca ancora</string>
+    <string name="quit">Esci</string>
+    <string name="results">Risultati</string>
 
 </resources>
