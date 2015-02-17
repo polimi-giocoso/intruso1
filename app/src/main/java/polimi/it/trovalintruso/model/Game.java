@@ -36,7 +36,9 @@ public class Game implements Parcelable {
     //methods
 
     public Interval getGameTime() {
-        return null;
+        Interval i = new Interval(getScreens().get(0).getScreenTime().getStart(),
+                getScreens().get(getScreens().size()-1).getScreenTime().getEnd());
+        return i;
     }
 
     public Screen getActiveScreen() {
@@ -133,5 +135,12 @@ public class Game implements Parcelable {
         _activeScreen = in.readInt();
         _screens = in.readArrayList(Screen.class.getClassLoader());
         _settings = in.readParcelable(Settings.class.getClassLoader());
+    }
+
+    public void restart() {
+        _activeScreen = 0;
+        for(Screen s : _screens) {
+            s.initialize();
+        }
     }
 }

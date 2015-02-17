@@ -86,23 +86,6 @@ public class ScreenActivity extends Activity {
         }
     }
 
-    /*@OnItemClick(R.id.game_grid_view) void ImageClick(AdapterView<?> parent, View v, int position, long id) {
-        Element el = adapter.getItem(position);
-        if(el.get_isTarget()) {
-            game.getActiveScreen().completed();
-            YoYo.with(Techniques.Bounce)
-                    .duration(700)
-                    .playOn(v);
-            next_screen_button.setEnabled(true);
-        }
-        else {
-            YoYo.with(Techniques.Shake)
-                    .duration(700)
-                    .playOn(v);
-            game.getActiveScreen().error();
-        }
-    }*/
-
     @OnClick(R.id.next_screen_button) void screenCompleted() {
         if(game.goToNextScreen()) {
             if (game.getSettings().get_singlePlayer()) {

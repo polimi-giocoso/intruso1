@@ -28,6 +28,10 @@ public class Screen implements Parcelable {
         this._elements = _elements;
     }
 
+    public int getErrors() {
+        return _incorrectAttempts;
+    }
+
     public Screen() {
         _incorrectAttempts = 0;
     }
@@ -36,6 +40,13 @@ public class Screen implements Parcelable {
 
     public void initialize(ArrayList<Element> objects) {
         _elements = objects;
+        initialize();
+    }
+
+    public void initialize() {
+        _start = null;
+        _end = null;
+        _incorrectAttempts = 0;
     }
 
     public void start() {
@@ -76,14 +87,6 @@ public class Screen implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        /*if(_start != null)
-            dest.writeLong(_start.getMillis());
-        else
-            dest.writeLong(0);
-        if(_end != null)
-            dest.writeLong(_end.getMillis());
-        else
-            dest.writeLong(0);*/
         dest.writeValue(_start);
         dest.writeValue(_end);
         dest.writeInt(_incorrectAttempts);

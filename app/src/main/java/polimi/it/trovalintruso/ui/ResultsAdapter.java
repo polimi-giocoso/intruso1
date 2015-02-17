@@ -8,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import polimi.it.trovalintruso.R;
@@ -58,13 +61,29 @@ public class ResultsAdapter extends BaseAdapter {
         Screen s = _game.getScreens().get(position);
         int level = position + 1;
         holder.title.setText("Livello " + level);
+        holder.errors.setText("" + s.getErrors());
+        PeriodFormatter formatter = new PeriodFormatterBuilder()
+                .appendMinutes()
+                .appendSuffix(" minuto", " minuti")
+                .appendSeparator(" e ")
+                .appendSeconds()
+                .appendSuffix(" secondo", " secondi")
+                .toFormatter();
+        holder.time.setText("" + formatter.print(s.getScreenTime().toPeriod()));
 
         return view;
     }
 
     static class ViewHolder {
+
         @InjectView(R.id.screen_title)
         TextView title;
+
+        @InjectView(R.id.screen_errors)
+        TextView errors;
+
+        @InjectView(R.id.screen_time)
+        TextView time;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);

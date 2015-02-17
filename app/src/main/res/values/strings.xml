@@ -11,5 +11,7 @@
     <string name="play_again">Gioca ancora</string>
     <string name="quit">Esci</string>
     <string name="results">Risultati</string>
+    <string name="errors">errori:</string>
+    <string name="time">tempo:</string>
 
 </resources>
