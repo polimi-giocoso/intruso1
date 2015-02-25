@@ -15,6 +15,11 @@ public class Element implements Parcelable {
         _isTarget = false;
     }
 
+    public Element(Boolean target, String drawableName) {
+        _isTarget = target;
+        _drawableIdentifier = drawableName;
+    }
+
     //getters & setters
 
     public String get_drawable_name() {

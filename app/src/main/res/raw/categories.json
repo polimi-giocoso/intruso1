@@ -1,0 +1,47 @@
+[
+	{
+		"name": "Colori",
+		"groups": [
+			{
+				"target": "sample_0",
+				"others": [
+					"sample_1",
+					"sample_2",
+					"sample_3",
+					"sample_4",
+					"sample_5"
+				]
+			},
+			{
+				"target": "sample_9",
+				"others": [
+					"sample_6",
+					"sample_7",
+					"sample_8",
+					"sample_4",
+					"sample_5"
+				]
+			},
+			{
+				"target": "sample_5",
+				"others": [
+					"sample_6",
+					"sample_1",
+					"sample_9",
+					"sample_4",
+					"sample_3"
+				]
+			},
+			{
+				"target": "sample_6",
+				"others": [
+					"sample_0",
+					"sample_3",
+					"sample_2",
+					"sample_8",
+					"sample_4"
+				]
+			}
+		]
+	}
+]

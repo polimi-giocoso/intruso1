@@ -64,10 +64,10 @@ public class ResultsAdapter extends BaseAdapter {
         holder.errors.setText("" + s.getErrors());
         PeriodFormatter formatter = new PeriodFormatterBuilder()
                 .appendMinutes()
-                .appendSuffix(" minuto", " minuti")
-                .appendSeparator(" e ")
+                .appendSuffix(" " + _context.getString(R.string.minute), " " +  _context.getString(R.string.minutes))
+                .appendSeparator(" " + _context.getString(R.string.and) + " ")
                 .appendSeconds()
-                .appendSuffix(" secondo", " secondi")
+                .appendSuffix(" " + _context.getString(R.string.second), " " + _context.getString(R.string.seconds))
                 .toFormatter();
         holder.time.setText("" + formatter.print(s.getScreenTime().toPeriod()));
 

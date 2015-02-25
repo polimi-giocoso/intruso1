@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -31,6 +32,9 @@ public class ResultsActivity extends Activity {
     @InjectView(R.id.button_quit_game)
     Button quit_game;
 
+    @InjectView(R.id.total_game_time)
+    TextView total_game_time;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,7 @@ public class ResultsActivity extends Activity {
         ButterKnife.inject(this);
         adapter = new ResultsAdapter(game, context);
         list.setAdapter(adapter);
+        total_game_time.setText(getString(R.string.game_time) + " " + game.getGameTime(context));
     }
 
     @OnClick(R.id.button_quit_game) void quit() {

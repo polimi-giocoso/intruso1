@@ -7,6 +7,9 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Random;
 
 /**
  * Created by poool on 09/02/15.
@@ -38,8 +41,23 @@ public class Screen implements Parcelable {
 
     //game methods
 
-    public void initialize(ArrayList<Element> objects) {
+    /*public void initialize(ArrayList<Element> objects) {
         _elements = objects;
+        initialize();
+    }*/
+
+    public void initialize(CategoryGroup group, int numOfObjects) {
+        _elements = new ArrayList<Element>();
+        _elements.add(new Element(true, group.getTarget()));
+        ArrayList<String> others = new ArrayList<String>(Arrays.asList(group.getOthers()));
+        Collections.shuffle(others, new Random());
+        for(int i = 0; i < numOfObjects - 1; i++) {
+            _elements.add(new Element(false, others.get(i)));
+        }
+        /*for(String s : group.getOthers()) {
+            _elements.add(new Element(false, s));
+        }*/
+        Collections.shuffle(_elements, new Random());
         initialize();
     }
 

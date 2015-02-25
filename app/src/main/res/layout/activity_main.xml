@@ -1,57 +1,91 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="polimi.it.trovalintruso.SettingsActivity"
-    android:id="@+id/main_area">
+    android:id="@+id/main_area"
+    android:background="@color/background_color">
 
-    <LinearLayout
-        android:layout_gravity="center"
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo"/>
+    </FrameLayout>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="50dip"
-        android:paddingRight="50dip">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:text="Configura"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="@dimen/abc_text_size_title_material"
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="60dip"/>
+            android:orientation="vertical"
+            android:paddingLeft="50dip"
+            android:paddingRight="50dip">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dip"
-            android:layout_marginTop="20dip"
-            android:text="Categoria"/>
+            <TextView
+                android:text="Configura"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="@dimen/abc_text_size_title_material"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:layout_marginBottom="60dip"/>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dip"
-            android:layout_marginTop="20dip"
-            android:text="Tempo"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dip"
+                android:layout_marginTop="20dip"
+                android:id="@+id/button_single_player"/>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dip"
-            android:layout_marginTop="20dip"
-            android:text="Schermate"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dip"
+                android:layout_marginTop="20dip"
+                android:id="@+id/button_config_category"/>
 
-        <Button
-            android:id="@+id/button_start_game"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dip"
-            android:layout_marginTop="20dip"
-            android:text="Inizia a giocare"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dip"
+                android:layout_marginTop="20dip"
+                android:id="@+id/button_config_time_limit"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dip"
+                android:layout_marginTop="20dip"
+                android:id="@+id/button_num_of_screens"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dip"
+                android:layout_marginTop="20dip"
+                android:id="@+id/button_num_obj_each_screen"/>
+
+            <Button
+                android:id="@+id/button_start_game"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dip"
+                android:layout_marginTop="20dip"
+                android:text="@string/start_game"/>
 
 
-    </LinearLayout>
+        </LinearLayout>
 
-</LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="polimi.it.trovalintruso.ResultsActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/background_color">
 
     <TextView
         android:layout_width="wrap_content"
@@ -17,6 +18,15 @@
         android:layout_height="match_parent"
         android:id="@+id/results_list_view"
         android:layout_weight="1"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textSize="@dimen/abc_text_size_headline_material"
+        android:id="@+id/total_game_time"/>
 
     <LinearLayout
         android:layout_width="match_parent"

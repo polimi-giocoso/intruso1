@@ -1,11 +1,18 @@
 package polimi.it.trovalintruso.model;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.joda.time.Interval;
+import org.joda.time.Duration;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
+
+import polimi.it.trovalintruso.R;
 
 /**
  * Created by poool on 09/02/15.
@@ -15,15 +22,6 @@ public class Game implements Parcelable {
     private Settings _settings;
     private ArrayList<Screen> _screens;
     private int _activeScreen;
-
-    //TODO delete demo settings initialization
-    public Game() {
-        _settings = new Settings();
-        _settings.set_singlePlayer(true);
-        _settings.setNumOfObjects(5);
-        _settings.setNumOfScreens(2);
-        _settings.setTimeLimitEnabled(false);
-    }
 
     public Game(Settings settings) {
         _settings = settings;
@@ -35,10 +33,21 @@ public class Game implements Parcelable {
 
     //methods
 
-    public Interval getGameTime() {
-        Interval i = new Interval(getScreens().get(0).getScreenTime().getStart(),
-                getScreens().get(getScreens().size()-1).getScreenTime().getEnd());
-        return i;
+    public String getGameTime(Context context) {
+        Duration i = _screens.get(0).getScreenTime().toDuration();
+        for(int x = 1; x < _screens.size(); x++) {
+            i = i.plus(_screens.get(x).getScreenTime().toDuration());
+        }
+        //Interval i = new Interval(getScreens().get(0).getScreenTime().getStart(),
+        //        getScreens().get(getScreens().size()-1).getScreenTime().getEnd());
+        PeriodFormatter formatter = new PeriodFormatterBuilder()
+                .appendMinutes()
+                .appendSuffix(" " + context.getString(R.string.minute), " " +  context.getString(R.string.minutes))
+                .appendSeparator(" " + context.getString(R.string.and) + " ")
+                .appendSeconds()
+                .appendSuffix(" " + context.getString(R.string.second), " " + context.getString(R.string.seconds))
+                .toFormatter();
+        return formatter.print(i.toPeriod());
     }
 
     public Screen getActiveScreen() {
@@ -63,7 +72,6 @@ public class Game implements Parcelable {
     }
 
     public void initialize() {
-
         //create the screens
         _screens = new ArrayList<Screen>();
         for(int i = 0; i < _settings.getNumOfScreens(); i++) {
@@ -71,11 +79,52 @@ public class Game implements Parcelable {
             Screen screen = new Screen();
             _screens.add(screen);
         }
-        DemoData();
+        //DemoData();
+        fillScreens();
         _activeScreen = 0;
     }
 
-    //TODO change with Category manager
+    private void fillScreens() {
+        Random rand = new Random();
+        if(_settings.getRandomCategory()) {
+            HashMap<Integer, ArrayList<Integer>> used = new HashMap<Integer, ArrayList<Integer>>();
+            for(int i = 0; i < _settings.getNumOfScreens(); i++) {
+                int max1 = _settings.getCategoryList().size() - 1;
+                int min1 = 0;
+                int randomCat = rand.nextInt((max1 - min1) + 1) + min1;
+                if(!used.keySet().contains(randomCat))
+                    used.put(randomCat, new ArrayList<Integer>());
+                Category category = _settings.getCategoryList().get(randomCat);
+                ArrayList<CategoryGroup> groups = category.getGroups();
+                int max = groups.size() - 1;
+                int min = 0;
+                int random = rand.nextInt((max - min) + 1) + min;
+                while(used.get(randomCat).contains(random))
+                    random = rand.nextInt((max - min) + 1) + min;
+                CategoryGroup cg = groups.get(random);
+                Screen screen = _screens.get(i);
+                screen.initialize(cg, _settings.getNumOfObjects());
+            }
+        }
+        else {
+            Category category = _settings.getCategory();
+            ArrayList<CategoryGroup> groups = category.getGroups();
+            ArrayList<Integer> used = new ArrayList<Integer>();
+            for(int i = 0; i < _settings.getNumOfScreens(); i++) {
+                int max = groups.size() - 1;
+                int min = 0;
+                int random = rand.nextInt((max - min) + 1) + min;
+                while(used.contains(random))
+                    random = rand.nextInt((max - min) + 1) + min;
+                used.add(random);
+                CategoryGroup cg = groups.get(random);
+                Screen screen = _screens.get(i);
+                screen.initialize(cg, _settings.getNumOfObjects());
+            }
+        }
+    }
+
+    /*//TODO change with Category manager
     private void DemoData() {
         for(int i = 0; i < _settings.getNumOfScreens(); i++) {
 
@@ -102,7 +151,7 @@ public class Game implements Parcelable {
             }
             screen.set_elements(objects);
         }
-    }
+    }*/
 
     //parcelable implementation
 

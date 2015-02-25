@@ -13,5 +13,19 @@
     <string name="results">Risultati</string>
     <string name="errors">errori:</string>
     <string name="time">tempo:</string>
+    <string name="category">Categoria:</string>
+    <string name="single_player">Un Giocatore</string>
+    <string name="multi_player">Due Giocatori</string>
+    <string name="no_time_limit">Nessun limite di tempo</string>
+    <string name="time_limit">Limite di tempo: </string>
+    <string name="start_game">Inizia a giocare</string>
+    <string name="num_of_screens">Numero di schermate:</string>
+    <string name="num_of_objects">Numero di oggetti per schermata:</string>
+    <string name="seconds">secondi</string>
+    <string name="second">secondo</string>
+    <string name="minutes">minuti</string>
+    <string name="minute">minuto</string>
+    <string name="and">e</string>
+    <string name="game_time">Tempo di gioco:</string>
 
 </resources>

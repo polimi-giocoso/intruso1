@@ -9,12 +9,14 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -38,7 +40,8 @@ public class ScreenActivity extends Activity {
 
     Game game;
     Context context;
-    //ImageAdapter adapter;
+    Boolean inGame;
+    CountDownTimer timer;
 
     //@InjectView(R.id.game_grid_view)
     //GridView game_grid_view;
@@ -81,8 +84,25 @@ public class ScreenActivity extends Activity {
 
     private void gameScreenInitialization() {
         game.getActiveScreen().start();
+        inGame = true;
         if(game.getSettings().getTimeLimitEnabled()) {
             //TODO set timer here
+            timer = new CountDownTimer(game.getSettings().get_timeLimit(), 1000){
+
+                @Override
+                public void onFinish() {
+                    next_screen_button.setEnabled(true);
+                    inGame = false;
+                    game.getActiveScreen().completed();
+                    //TODO ui here
+                    Toast.makeText(context, "Tempo Scaduto!!", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onTick(long millisUntilFinished) {
+
+                }
+            }.start();
         }
     }
 
@@ -147,22 +167,27 @@ public class ScreenActivity extends Activity {
                 public void onClick(View v) {
                     int index = (int) v.getTag();
                     Element el = game.getActiveScreen().get_elements().get(index);
-                    if(el.get_isTarget()) {
-                        game.getActiveScreen().completed();
-                        MediaPlayer oh_yeah_effect = MediaPlayer.create(context, R.raw.oh_yeah_1);
-                        oh_yeah_effect.start();
-                        YoYo.with(Techniques.Bounce)
-                                .duration(700)
-                                .playOn(v);
-                        next_screen_button.setEnabled(true);
-                    }
-                    else {
-                        MediaPlayer oh_no_effect = MediaPlayer.create(context, R.raw.oh_no_1);
-                        oh_no_effect.start();
-                        YoYo.with(Techniques.Shake)
-                                .duration(700)
-                                .playOn(v);
-                        game.getActiveScreen().error();
+                    if(inGame) {
+                        if(el.get_isTarget()) {
+                            if(game.getSettings().getTimeLimitEnabled())
+                                timer.cancel();
+                            game.getActiveScreen().completed();
+                            MediaPlayer oh_yeah_effect = MediaPlayer.create(context, R.raw.oh_yeah_1);
+                            oh_yeah_effect.start();
+                            YoYo.with(Techniques.Bounce)
+                                    .duration(700)
+                                    .playOn(v);
+                            next_screen_button.setEnabled(true);
+                            inGame = false;
+                        }
+                        else {
+                            MediaPlayer oh_no_effect = MediaPlayer.create(context, R.raw.oh_no_1);
+                            oh_no_effect.start();
+                            YoYo.with(Techniques.Shake)
+                                    .duration(700)
+                                    .playOn(v);
+                            game.getActiveScreen().error();
+                        }
                     }
                 }
             });
