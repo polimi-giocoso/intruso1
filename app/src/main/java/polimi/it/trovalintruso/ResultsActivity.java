@@ -46,6 +46,11 @@ public class ResultsActivity extends Activity {
         initializeUi();
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
     private void initializeUi() {
         ButterKnife.inject(this);
         adapter = new ResultsAdapter(game, context);

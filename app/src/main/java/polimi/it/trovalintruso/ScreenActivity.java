@@ -1,37 +1,31 @@
 package polimi.it.trovalintruso;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
+import android.content.pm.ApplicationInfo;
+import android.speech.tts.TextToSpeech;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.widget.AdapterView;
+import android.speech.tts.TextToSpeech;
 import android.widget.Button;
-import android.widget.GridView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
-import java.io.IOException;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
 
 import polimi.it.trovalintruso.model.Element;
 import polimi.it.trovalintruso.model.Game;
 import polimi.it.trovalintruso.model.Screen;
-import polimi.it.trovalintruso.ui.ImageAdapter;
 
 import static polimi.it.trovalintruso.R.string;
 
@@ -41,13 +35,7 @@ public class ScreenActivity extends Activity {
     Game game;
     Context context;
     Boolean inGame;
-    CountDownTimer timer;
-
-    //@InjectView(R.id.game_grid_view)
-    //GridView game_grid_view;
-
-    //@InjectView(R.id.game_view)
-    //LinearLayout game_view;
+    TextToSpeech ttobj;
 
     @InjectView(R.id.game_layout1)
     LinearLayout layout1;
@@ -68,6 +56,28 @@ public class ScreenActivity extends Activity {
         game = getIntent().getExtras().getParcelable(pkg + ".game");
         initializeUI();
         gameScreenInitialization();
+        ttobj=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR){
+                    ttobj.setLanguage(Locale.ITALIAN);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+
+    }
+
+    @Override
+    public void onPause(){
+        if(ttobj !=null){
+            ttobj.stop();
+            ttobj.shutdown();
+        }
+        super.onPause();
     }
 
     private void initializeUI() {
@@ -76,34 +86,12 @@ public class ScreenActivity extends Activity {
             next_screen_button.setText(string.end_game);
         else
             next_screen_button.setText(string.next_level);
-        //adapter = new ImageAdapter(this, game.getActiveScreen().get_elements());
-        //game_grid_view.setAdapter(adapter);
-        //game_grid_view.setNumColumns(2);
         populateGameArea();
     }
 
     private void gameScreenInitialization() {
         game.getActiveScreen().start();
         inGame = true;
-        if(game.getSettings().getTimeLimitEnabled()) {
-            //TODO set timer here
-            timer = new CountDownTimer(game.getSettings().get_timeLimit(), 1000){
-
-                @Override
-                public void onFinish() {
-                    next_screen_button.setEnabled(true);
-                    inGame = false;
-                    game.getActiveScreen().completed();
-                    //TODO ui here
-                    Toast.makeText(context, "Tempo Scaduto!!", Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onTick(long millisUntilFinished) {
-
-                }
-            }.start();
-        }
     }
 
     @OnClick(R.id.next_screen_button) void screenCompleted() {
@@ -169,11 +157,8 @@ public class ScreenActivity extends Activity {
                     Element el = game.getActiveScreen().get_elements().get(index);
                     if(inGame) {
                         if(el.get_isTarget()) {
-                            if(game.getSettings().getTimeLimitEnabled())
-                                timer.cancel();
                             game.getActiveScreen().completed();
-                            MediaPlayer oh_yeah_effect = MediaPlayer.create(context, R.raw.oh_yeah_1);
-                            oh_yeah_effect.start();
+                            ttobj.speak("ottimo", TextToSpeech.QUEUE_FLUSH, null);
                             YoYo.with(Techniques.Bounce)
                                     .duration(700)
                                     .playOn(v);
@@ -181,8 +166,7 @@ public class ScreenActivity extends Activity {
                             inGame = false;
                         }
                         else {
-                            MediaPlayer oh_no_effect = MediaPlayer.create(context, R.raw.oh_no_1);
-                            oh_no_effect.start();
+                            ttobj.speak("hai sbagliato", TextToSpeech.QUEUE_FLUSH, null);
                             YoYo.with(Techniques.Shake)
                                     .duration(700)
                                     .playOn(v);

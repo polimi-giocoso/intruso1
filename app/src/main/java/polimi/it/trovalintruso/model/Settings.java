@@ -27,8 +27,8 @@ public class Settings implements Parcelable {
 
     private int _numOfObjects;
     private int _numOfScreens;
-    private Boolean _timeLimitEnabled;
-    private int _timeLimit;
+    //private Boolean _timeLimitEnabled;
+    //private int _timeLimit;
     private Boolean _randomCategory;
     private Category _category;
     private Boolean _singlePlayer;
@@ -37,8 +37,8 @@ public class Settings implements Parcelable {
         _numOfObjects = 4;
         _numOfScreens = 2;
         _randomCategory = false;
-        _timeLimitEnabled = false;
-        _timeLimit = 0;
+        //_timeLimitEnabled = false;
+        //_timeLimit = 0;
         _categoryList = new ArrayList<Category>();
         String categories = readCategoriesFile(context);
         if(categories != null) {
@@ -77,13 +77,13 @@ public class Settings implements Parcelable {
         this._numOfObjects = numOfObjects;
     }
 
-    public Boolean getTimeLimitEnabled() {
+    /* Boolean getTimeLimitEnabled() {
         return _timeLimitEnabled;
     }
 
     public void setTimeLimitEnabled(Boolean timeLimit) {
         this._timeLimitEnabled = timeLimit;
-    }
+    }*/
 
     public int getNumOfScreens() {
         return _numOfScreens;
@@ -93,13 +93,13 @@ public class Settings implements Parcelable {
         this._numOfScreens = numOfScreens;
     }
 
-    public int get_timeLimit() {
+    /*public int get_timeLimit() {
         return _timeLimit;
     }
 
     public void set_timeLimit(int _timeLimit) {
         this._timeLimit = _timeLimit;
-    }
+    }*/
 
     public Boolean get_singlePlayer() {
         return _singlePlayer;
@@ -133,17 +133,17 @@ public class Settings implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(_numOfScreens);
         dest.writeInt(_numOfObjects);
-        dest.writeByte((byte) (_timeLimitEnabled ? 1 : 0));
+        //dest.writeByte((byte) (_timeLimitEnabled ? 1 : 0));
         dest.writeByte((byte) (_singlePlayer ? 1 : 0));
-        dest.writeInt(_timeLimit);
+        //dest.writeInt(_timeLimit);
     }
 
     private void readFromParcel(Parcel in ) {
         _numOfScreens = in.readInt();
         _numOfObjects = in.readInt();
-        _timeLimitEnabled = in.readByte() != 0;
+        //_timeLimitEnabled = in.readByte() != 0;
         _singlePlayer = in.readByte() != 0;
-        _timeLimit = in.readInt();
+        //_timeLimit = in.readInt();
     }
 
     private String readCategoriesFile(Context ctx)

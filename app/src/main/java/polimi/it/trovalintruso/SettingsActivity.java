@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 import org.json.JSONException;
@@ -43,8 +42,8 @@ public class SettingsActivity extends Activity {
     @InjectView(R.id.button_single_player)
     Button config_single_player;
 
-    @InjectView(R.id.button_config_time_limit)
-    Button config_time_limit;
+    //@InjectView(R.id.button_config_time_limit)
+    //Button config_time_limit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +55,11 @@ public class SettingsActivity extends Activity {
         initializeUI();
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
     private void initializeUI() {
         ButterKnife.inject(this);
         config_category.setText(context.getString(R.string.category) + " " + gameSettings.getCategory().getName());
@@ -63,10 +67,10 @@ public class SettingsActivity extends Activity {
             config_single_player.setText(R.string.single_player);
         else
             config_single_player.setText(R.string.multi_player);
-        if(!gameSettings.getTimeLimitEnabled())
+        /*if(!gameSettings.getTimeLimitEnabled())
             config_time_limit.setText(R.string.no_time_limit);
         else
-            config_time_limit.setText(context.getString(R.string.time_limit) + " " + (gameSettings.get_timeLimit() / 1000) + " " + getString(R.string.seconds));
+            config_time_limit.setText(context.getString(R.string.time_limit) + " " + (gameSettings.get_timeLimit() / 1000) + " " + getString(R.string.seconds));*/
         button_num_of_screens.setText(getString(R.string.num_of_screens) + " " + gameSettings.getNumOfScreens());
         button_num_objects_each_screen.setText(getString(R.string.num_of_objects) + " " + gameSettings.getNumOfObjects());
     }
@@ -78,7 +82,7 @@ public class SettingsActivity extends Activity {
             gameSettings.setCategory(gameSettings.getCategoryList().get(0));
             gameSettings.setNumOfObjects(4);
             gameSettings.setNumOfScreens(1);
-            gameSettings.setTimeLimitEnabled(false);
+            //gameSettings.setTimeLimitEnabled(false);
             game = new Game(gameSettings);
         }
         catch(JSONException e) {
@@ -89,8 +93,8 @@ public class SettingsActivity extends Activity {
 
     @OnClick(R.id.button_num_obj_each_screen) void changeNumOfObjects() {
         int actual = gameSettings.getNumOfObjects();
-        if(actual < 6)
-            actual++;
+        if(actual == 4)
+            actual = 6;
         else
             actual = 4;
         gameSettings.setNumOfObjects(actual);
@@ -113,7 +117,7 @@ public class SettingsActivity extends Activity {
         initializeUI();
     }
 
-    @OnClick(R.id.button_config_time_limit) void ButtomTimeLimitClick() {
+    /*@OnClick(R.id.button_config_time_limit) void ButtomTimeLimitClick() {
         if(gameSettings.getTimeLimitEnabled()) {
             gameSettings.setTimeLimitEnabled(false);
         }
@@ -122,7 +126,7 @@ public class SettingsActivity extends Activity {
             gameSettings.set_timeLimit(5000);
         }
         initializeUI();
-    }
+    }*/
 
     @OnClick(R.id.button_start_game) void startGame() {
         game.initialize();
@@ -136,26 +140,4 @@ public class SettingsActivity extends Activity {
 
         }
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
 }
