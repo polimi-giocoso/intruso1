@@ -18,6 +18,7 @@ import butterknife.OnClick;
 import polimi.it.trovalintruso.model.Category;
 import polimi.it.trovalintruso.model.Game;
 import polimi.it.trovalintruso.model.Settings;
+import polimi.it.trovalintruso.multiplayer.MultiPlayerHelper;
 
 
 public class SettingsActivity extends Activity {
@@ -53,6 +54,7 @@ public class SettingsActivity extends Activity {
         context = this;
         initializeGame();
         initializeUI();
+        MultiPlayerHelper.init(this);
     }
 
     @Override
