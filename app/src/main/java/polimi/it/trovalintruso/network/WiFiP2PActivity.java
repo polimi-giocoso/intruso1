@@ -18,7 +18,7 @@ import polimi.it.trovalintruso.R;
 /**
  * Created by Paolo on 01/03/2015.
  */
-public class BluetoothActivity extends Activity {
+public class WiFiP2PActivity extends Activity {
 
     @InjectView(R.id.devices_discovery_listView)
     ListView devicesListView;

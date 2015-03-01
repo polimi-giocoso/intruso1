@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
@@ -52,9 +54,16 @@ public class SettingsActivity extends Activity {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         context = this;
+        App.mHelper = new MultiPlayerHelper();
+        try {
+            App.mHelper.init(context);
+        }
+        catch (IOException e) {
+            //Log.d("MultiIOException", e.printStackTrace());
+            e.printStackTrace();
+        }
         initializeGame();
         initializeUI();
-        MultiPlayerHelper.init(this);
     }
 
     @Override
