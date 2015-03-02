@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -20,7 +22,7 @@ import polimi.it.trovalintruso.ui.ResultsAdapter;
 public class ResultsActivity extends Activity {
 
     Context context;
-    Game game;
+    //Game game;
     ResultsAdapter adapter;
 
     @InjectView(R.id.results_list_view)
@@ -42,7 +44,7 @@ public class ResultsActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         context = this;
         String pkg = context.getPackageName();
-        game = getIntent().getExtras().getParcelable(pkg + ".game");
+        //game = getIntent().getExtras().getParcelable(pkg + ".game");
         initializeUi();
     }
 
@@ -51,11 +53,17 @@ public class ResultsActivity extends Activity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        App.multiPlayerHelper.onActivityResume(this);
+    }
+
     private void initializeUi() {
         ButterKnife.inject(this);
-        adapter = new ResultsAdapter(game, context);
+        adapter = new ResultsAdapter(App.game, context);
         list.setAdapter(adapter);
-        total_game_time.setText(getString(R.string.game_time) + " " + game.getGameTime(context));
+        total_game_time.setText(getString(R.string.game_time) + " " + App.game.getGameTime(context));
     }
 
     @OnClick(R.id.button_quit_game) void quit() {
@@ -69,8 +77,8 @@ public class ResultsActivity extends Activity {
     @OnClick(R.id.button_restart_game) void restart() {
         Intent intent = new Intent(context, ScreenActivity.class);
         String pkg = context.getPackageName();
-        game.restart();
-        intent.putExtra(pkg + ".game", game);
+        App.game.restart();
+        //intent.putExtra(pkg + ".game", game);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
     }

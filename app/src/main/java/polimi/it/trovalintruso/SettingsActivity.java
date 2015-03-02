@@ -1,16 +1,18 @@
 package polimi.it.trovalintruso;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.Button;
 
 import org.json.JSONException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
@@ -19,8 +21,9 @@ import butterknife.OnClick;
 
 import polimi.it.trovalintruso.model.Category;
 import polimi.it.trovalintruso.model.Game;
+import polimi.it.trovalintruso.model.GameMessage;
 import polimi.it.trovalintruso.model.Settings;
-import polimi.it.trovalintruso.multiplayer.MultiPlayerHelper;
+import polimi.it.trovalintruso.network.MultiPlayerDiscoveryActivity;
 
 
 public class SettingsActivity extends Activity {
@@ -54,21 +57,37 @@ public class SettingsActivity extends Activity {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         context = this;
-        App.mHelper = new MultiPlayerHelper();
-        try {
-            App.mHelper.init(context);
-        }
-        catch (IOException e) {
-            //Log.d("MultiIOException", e.printStackTrace());
-            e.printStackTrace();
-        }
         initializeGame();
         initializeUI();
     }
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        App.multiPlayerHelper.onActivityResume(this);
+        /*App.mConnection.setmUpdateHandler(new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                GameMessage message = (GameMessage) msg.getData().getSerializable("message");
+
+            }
+        });*/
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        App.multiPlayerHelper.onMainActivityDestroy();
+        super.onDestroy();
     }
 
     private void initializeUI() {
@@ -90,7 +109,7 @@ public class SettingsActivity extends Activity {
         try {
             gameSettings = new Settings(context);
             gameSettings.set_singlePlayer(true);
-            gameSettings.setCategory(gameSettings.getCategoryList().get(0));
+            gameSettings.setCategory(App.getCategoryManager().getCategoryList().get(0));
             gameSettings.setNumOfObjects(4);
             gameSettings.setNumOfScreens(1);
             //gameSettings.setTimeLimitEnabled(false);
@@ -140,15 +159,14 @@ public class SettingsActivity extends Activity {
     }*/
 
     @OnClick(R.id.button_start_game) void startGame() {
-        game.initialize();
-        if(game.getSettings().get_singlePlayer()) {
-            Intent intent = new Intent(context, ScreenActivity.class);
-            String pkg = context.getPackageName();
-            intent.putExtra(pkg + ".game", game);
-            context.startActivity(intent);
-        }
-        else {
-
-        }
+        App.game = game;
+        Intent intent;
+        if(game.getSettings().get_singlePlayer())
+            intent = new Intent(context, ScreenActivity.class);
+        else
+            intent = new Intent(context, MultiPlayerDiscoveryActivity.class);
+        String pkg = context.getPackageName();
+        //intent.putExtra(pkg + ".game", game);
+        context.startActivity(intent);
     }
 }

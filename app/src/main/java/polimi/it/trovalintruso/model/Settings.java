@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,8 +24,6 @@ public class Settings implements Parcelable {
 
     //public static enum Category { Casuale, Colori, Forme}
 
-    private ArrayList<Category> _categoryList;
-
     private int _numOfObjects;
     private int _numOfScreens;
     //private Boolean _timeLimitEnabled;
@@ -39,14 +38,7 @@ public class Settings implements Parcelable {
         _randomCategory = false;
         //_timeLimitEnabled = false;
         //_timeLimit = 0;
-        _categoryList = new ArrayList<Category>();
-        String categories = readCategoriesFile(context);
-        if(categories != null) {
-            JSONArray arr = new JSONArray(categories);
-            for(int i = 0; i < arr.length(); i++) {
-                _categoryList.add(new Category(arr.getJSONObject(i)));
-            }
-        }
+
     }
 
     public Category getCategory() {
@@ -55,10 +47,6 @@ public class Settings implements Parcelable {
 
     public void setCategory(Category category) {
         _category = category;
-    }
-
-    public ArrayList<Category> getCategoryList() {
-        return _categoryList;
     }
 
     public Boolean getRandomCategory() {
@@ -146,22 +134,13 @@ public class Settings implements Parcelable {
         //_timeLimit = in.readInt();
     }
 
-    private String readCategoriesFile(Context ctx)
-    {
-        InputStream inputStream = ctx.getResources().openRawResource(R.raw.categories);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        int i;
-        try {
-            i = inputStream.read();
-            while (i != -1)
-            {
-                byteArrayOutputStream.write(i);
-                i = inputStream.read();
-            }
-            inputStream.close();
-        } catch (IOException e) {
-            return null;
-        }
-        return byteArrayOutputStream.toString();
+    public JSONObject getJsonObject() throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("numOfScreens", _numOfScreens);
+        obj.put("numOfObjects", _numOfObjects);
+        obj.put("randomCategory", _randomCategory);
+        obj.put("singlePlayer", _singlePlayer);
+        //obj.put("category", _category.getJsonObject());
+        return obj;
     }
 }

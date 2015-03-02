@@ -13,7 +13,8 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:name=".App">
         <activity
             android:name=".SettingsActivity"
             android:label="@string/app_name"
@@ -32,6 +33,11 @@
         <activity
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:name=".ResultsActivity"
+            android:label="@string/title_activity_results" >
+        </activity>
+        <activity
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:name=".network.MultiPlayerDiscoveryActivity"
             android:label="@string/title_activity_results" >
         </activity>
     </application>

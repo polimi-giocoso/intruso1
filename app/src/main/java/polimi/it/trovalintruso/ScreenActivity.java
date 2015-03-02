@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
+import android.os.Handler;
+import android.os.Message;
 import android.speech.tts.TextToSpeech;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -32,7 +34,7 @@ import static polimi.it.trovalintruso.R.string;
 
 public class ScreenActivity extends Activity {
 
-    Game game;
+    //Game game;
     Context context;
     Boolean inGame;
     TextToSpeech ttobj;
@@ -53,7 +55,7 @@ public class ScreenActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         context = this;
         String pkg = context.getPackageName();
-        game = getIntent().getExtras().getParcelable(pkg + ".game");
+        //game = getIntent().getExtras().getParcelable(pkg + ".game");
         initializeUI();
         gameScreenInitialization();
         ttobj=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -72,6 +74,12 @@ public class ScreenActivity extends Activity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        App.multiPlayerHelper.onActivityResume(this);
+    }
+
+    @Override
     public void onPause(){
         if(ttobj !=null){
             ttobj.stop();
@@ -82,7 +90,7 @@ public class ScreenActivity extends Activity {
 
     private void initializeUI() {
         ButterKnife.inject(this);
-        if(game.isLastScreen())
+        if(App.game.isLastScreen())
             next_screen_button.setText(string.end_game);
         else
             next_screen_button.setText(string.next_level);
@@ -90,16 +98,16 @@ public class ScreenActivity extends Activity {
     }
 
     private void gameScreenInitialization() {
-        game.getActiveScreen().start();
+        App.game.getActiveScreen().start();
         inGame = true;
     }
 
     @OnClick(R.id.next_screen_button) void screenCompleted() {
-        if(game.goToNextScreen()) {
-            if (game.getSettings().get_singlePlayer()) {
+        if(App.game.goToNextScreen()) {
+            if (App.game.getSettings().get_singlePlayer()) {
                 Intent intent = new Intent(context, ScreenActivity.class);
                 String pkg = context.getPackageName();
-                intent.putExtra(pkg + ".game", game);
+                //intent.putExtra(pkg + ".game", App.game);
                 context.startActivity(intent);
             } else {
 
@@ -108,13 +116,13 @@ public class ScreenActivity extends Activity {
         else {
             Intent intent = new Intent(context, ResultsActivity.class);
             String pkg = context.getPackageName();
-            intent.putExtra(pkg + ".game", game);
+            //intent.putExtra(pkg + ".game", App.game);
             context.startActivity(intent);
         }
     }
 
     private void populateGameArea() {
-        Screen s = game.getActiveScreen();
+        Screen s = App.game.getActiveScreen();
         int num = s.get_elements().size();
         for(int i = 0; i < num; i++) {
             Element el = s.get_elements().get(i);
@@ -154,10 +162,10 @@ public class ScreenActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     int index = (int) v.getTag();
-                    Element el = game.getActiveScreen().get_elements().get(index);
+                    Element el = App.game.getActiveScreen().get_elements().get(index);
                     if(inGame) {
                         if(el.get_isTarget()) {
-                            game.getActiveScreen().completed();
+                            App.game.getActiveScreen().completed();
                             ttobj.speak("ottimo", TextToSpeech.QUEUE_FLUSH, null);
                             YoYo.with(Techniques.Bounce)
                                     .duration(700)
@@ -170,7 +178,7 @@ public class ScreenActivity extends Activity {
                             YoYo.with(Techniques.Shake)
                                     .duration(700)
                                     .playOn(v);
-                            game.getActiveScreen().error();
+                            App.game.getActiveScreen().error();
                         }
                     }
                 }

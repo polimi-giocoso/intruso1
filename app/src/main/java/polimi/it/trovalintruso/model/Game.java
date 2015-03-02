@@ -7,11 +7,15 @@ import android.os.Parcelable;
 import org.joda.time.Duration;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import polimi.it.trovalintruso.App;
 import polimi.it.trovalintruso.R;
 
 /**
@@ -89,12 +93,12 @@ public class Game implements Parcelable {
         if(_settings.getRandomCategory()) {
             HashMap<Integer, ArrayList<Integer>> used = new HashMap<Integer, ArrayList<Integer>>();
             for(int i = 0; i < _settings.getNumOfScreens(); i++) {
-                int max1 = _settings.getCategoryList().size() - 1;
+                int max1 = App.getCategoryManager().getCategoryList().size() - 1;
                 int min1 = 0;
                 int randomCat = rand.nextInt((max1 - min1) + 1) + min1;
                 if(!used.keySet().contains(randomCat))
                     used.put(randomCat, new ArrayList<Integer>());
-                Category category = _settings.getCategoryList().get(randomCat);
+                Category category = App.getCategoryManager().getCategoryList().get(randomCat);
                 ArrayList<CategoryGroup> groups = category.getGroups();
                 int max = groups.size() - 1;
                 int min = 0;
@@ -123,35 +127,6 @@ public class Game implements Parcelable {
             }
         }
     }
-
-    /*//TODO change with Category manager
-    private void DemoData() {
-        for(int i = 0; i < _settings.getNumOfScreens(); i++) {
-
-            Screen screen = _screens.get(i);
-            ArrayList<Element> objects = new ArrayList<Element>();
-            if(i == 0) {
-                for(int j = 0; j < _settings.getNumOfObjects(); j++) {
-                    Element el = new Element();
-                    el.set_drawable_name("sample_" + j);
-                    if(j == 0)
-                        el.set_isTarget(true);
-                    objects.add(el);
-                }
-            }
-            else {
-                for(int j = 0; j < _settings.getNumOfObjects(); j++) {
-                    Element el = new Element();
-                    int idx = j + 4;
-                    el.set_drawable_name("sample_" + idx);
-                    if(j == 0)
-                        el.set_isTarget(true);
-                    objects.add(el);
-                }
-            }
-            screen.set_elements(objects);
-        }
-    }*/
 
     //parcelable implementation
 
@@ -191,5 +166,16 @@ public class Game implements Parcelable {
         for(Screen s : _screens) {
             s.initialize();
         }
+    }
+
+    public JSONObject getJsonObject() throws JSONException {
+        JSONObject obj = new JSONObject();
+        obj.put("activeScreen", _activeScreen);
+        JSONArray arr = new JSONArray();
+        for(Screen s : _screens) {
+            //arr.put(s.getJsonObject());
+        }
+        obj.put("settings", _settings.getJsonObject());
+        return obj;
     }
 }

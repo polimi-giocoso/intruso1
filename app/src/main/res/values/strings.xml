@@ -27,5 +27,9 @@
     <string name="minute">minuto</string>
     <string name="and">e</string>
     <string name="game_time">Tempo di gioco:</string>
+    <string name="search_devices">Cerco altri giocatori</string>
+    <string name="invite_player">Invita giocatore</string>
+    <string name="wait">Attendi</string>
+    <string name="inviting_player">Sto invitando il giocatore...</string>
 
 </resources>
