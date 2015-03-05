@@ -10,6 +10,8 @@ public class GameMessage implements Serializable {
     public enum Type {
         ConnectionRequest,
         ConnectionAccepted,
+        ConnectionClosed,
+        Ping,
         SendGame,
         SendGameAck,
         ObjectPressed

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,6 +14,7 @@ import java.net.UnknownHostException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import polimi.it.trovalintruso.model.Category;
 import polimi.it.trovalintruso.model.GameMessage;
 
 /**
@@ -26,6 +28,7 @@ class MultiPlayerClient {
 
     private Thread mSendThread;
     private Thread mRecThread;
+    //private Thread mAliveThread;
     private MultiPlayerConnectionHelper mConnection;
 
     public MultiPlayerClient(InetAddress address, int port, MultiPlayerConnectionHelper connection) {
@@ -50,16 +53,18 @@ class MultiPlayerClient {
         @Override
         public void run() {
             try {
-                if (mConnection.getSocket() == null) {
+                //if (mConnection.getSocket() == null) {
                     mConnection.setSocket(new Socket(mAddress, PORT));
                     Log.d(CLIENT_TAG, "Client-side socket initialized.");
 
-                } else {
+                /*} else {
                     Log.d(CLIENT_TAG, "Socket already initialized. skipping!");
-                }
+                }*/
 
                 mRecThread = new Thread(new ReceivingThread());
                 mRecThread.start();
+                //mAliveThread = new Thread(new IsAliveThread());
+                //mAliveThread.start();
 
             } catch (UnknownHostException e) {
                 Log.d(CLIENT_TAG, "Initializing socket failed, UHE", e);
@@ -108,18 +113,52 @@ class MultiPlayerClient {
                     }
                     if(message != null) {
                         Log.i(CLIENT_TAG, "message received: " + message.type.toString());
-                        Message mex = new Message();
                         Bundle messageBundle = new Bundle();
                         messageBundle.putSerializable("message", message);
                         Message msg = new Message();
                         msg.setData(messageBundle);
-                        mConnection.mUpdateHandler.sendMessage(mex);
+                        mConnection.mUpdateHandler.sendMessage(msg);
                     }
                 }
                 input.close();
 
             } catch (IOException e) {
                 Log.e(CLIENT_TAG, "Server loop error: ", e);
+                GameMessage message = new GameMessage(GameMessage.Type.ConnectionClosed);
+                Bundle messageBundle = new Bundle();
+                messageBundle.putSerializable("message", message);
+                Message msg = new Message();
+                msg.setData(messageBundle);
+                mConnection.mUpdateHandler.sendMessage(msg);
+            }
+        }
+    }
+
+    class IsAliveThread implements Runnable {
+
+        @Override
+        public void run() {
+
+            BufferedInputStream input;
+            try {
+                input = new BufferedInputStream(mConnection.getSocket().getInputStream());
+                while (!Thread.currentThread().isInterrupted()) {
+                    GameMessage message = new GameMessage(GameMessage.Type.Ping);
+                    ObjectOutputStream out = new ObjectOutputStream(mConnection.getSocket().getOutputStream());
+                    out.writeObject(message);
+                    out.flush();
+                }
+                input.close();
+                wait(1000);
+
+            } catch (Exception e) {
+                Log.e(CLIENT_TAG, "Server loop error: ", e);
+                GameMessage message = new GameMessage(GameMessage.Type.ConnectionClosed);
+                Bundle messageBundle = new Bundle();
+                messageBundle.putSerializable("message", message);
+                Message msg = new Message();
+                msg.setData(messageBundle);
+                mConnection.mUpdateHandler.sendMessage(msg);
             }
         }
     }
@@ -127,6 +166,9 @@ class MultiPlayerClient {
     public void tearDown() {
         try {
             mConnection.getSocket().close();
+            mRecThread.interrupt();
+            mSendThread.interrupt();
+            //mAliveThread.interrupt();
         } catch (IOException ioe) {
             Log.e(CLIENT_TAG, "Error when closing server socket.");
         }

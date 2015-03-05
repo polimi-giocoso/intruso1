@@ -59,6 +59,7 @@ public class SettingsActivity extends Activity {
         context = this;
         initializeGame();
         initializeUI();
+        App.multiPlayerHelper.onMainActivityCreate();
     }
 
     @Override

@@ -19,6 +19,13 @@ class MultiPlayerServer {
 
     public MultiPlayerServer(Handler handler, MultiPlayerConnectionHelper connection) {
         mConnection = connection;
+        try {
+            mServerSocket = new ServerSocket(0);
+            mConnection.setLocalPort(mServerSocket.getLocalPort());
+        } catch (IOException e) {
+            Log.e(TAG, "Error creating ServerSocket: ", e);
+            e.printStackTrace();
+        }
         mThread = new Thread(new ServerThread());
         mThread.start();
     }
@@ -40,8 +47,8 @@ class MultiPlayerServer {
             try {
                 // Since discovery will happen via Nsd, we don't need to care which port is
                 // used.  Just grab an available one  and advertise it via Nsd.
-                mServerSocket = new ServerSocket(0);
-                mConnection.setLocalPort(mServerSocket.getLocalPort());
+                //mServerSocket = new ServerSocket(0);
+                //mConnection.setLocalPort(mServerSocket.getLocalPort());
 
                 while (!Thread.currentThread().isInterrupted()) {
                     Log.d(TAG, "ServerSocket Created, awaiting connection");

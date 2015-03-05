@@ -55,6 +55,7 @@ public class MultiPlayerServiceHelper {
     }
 
     public void initializeNsd() {
+        mServiceName = "";
         //initializeResolveListener();
         initializeDiscoveryListener();
         initializeRegistrationListener();
@@ -147,36 +148,6 @@ public class MultiPlayerServiceHelper {
                 mUpdateHandler.sendMessage(new Message());
         }
     }
-
-    /*public void initializeResolveListener() {
-        mResolveListener = new NsdManager.ResolveListener() {
-
-            @Override
-            public void onResolveFailed(NsdServiceInfo serviceInfo, int errorCode) {
-                Log.e(TAG, "Resolve failed" + errorCode);
-            }
-
-            @Override
-            public void onServiceResolved(NsdServiceInfo serviceInfo) {
-                Log.e(TAG, "Resolve Succeeded. " + serviceInfo);
-
-                if (serviceInfo.getServiceName().equals(mServiceName)) {
-                    Log.d(TAG, "Same IP.");
-                    return;
-                }
-                mService = serviceInfo;
-                Device dev = new Device(serviceInfo, "");
-                Boolean found = false;
-                for(Device d : mDeviceList) {
-                    if(d.equals(dev))
-                        found = true;
-                }
-                if(!found)
-                    mDeviceList.add(dev);
-                mUpdateHandler.sendMessage(new Message());
-            }
-        };
-    }*/
 
     public void initializeRegistrationListener() {
         mRegistrationListener = new NsdManager.RegistrationListener() {

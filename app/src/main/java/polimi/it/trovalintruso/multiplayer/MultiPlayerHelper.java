@@ -24,21 +24,23 @@ import polimi.it.trovalintruso.multiplayer.network.MultiPlayerConnectionHelper;
  */
 public class MultiPlayerHelper {
 
-    private final MultiPlayerServiceHelper multiPlayerServiceHelper;
-    private final MultiPlayerConnectionHelper mConnection;
+    private MultiPlayerServiceHelper multiPlayerServiceHelper;
+    private MultiPlayerConnectionHelper mConnection;
     private Context mContext;
     private ProgressDialog multiPlayerConnectionWaitDialog;
     private Handler mHandler;
+    private AlertDialog.Builder dialog;
 
 
     public MultiPlayerHelper(Context context) {
+        mContext = context;
         mHandler = new MultiPlayerHandler();
-        multiPlayerServiceHelper = new MultiPlayerServiceHelper(context);
-        multiPlayerServiceHelper.setUpdateHandler(mHandler);
-        mConnection = new MultiPlayerConnectionHelper(App.multiPlayerHelper.getHandler());
+        //multiPlayerServiceHelper.setUpdateHandler(mHandler);
     }
 
     private void init() {
+        multiPlayerServiceHelper = new MultiPlayerServiceHelper(mContext);
+        mConnection = new MultiPlayerConnectionHelper(mHandler);
         multiPlayerServiceHelper.initializeNsd();
         if(mConnection.getLocalPort() > -1) {
             multiPlayerServiceHelper.registerService(mConnection.getLocalPort());
@@ -57,12 +59,13 @@ public class MultiPlayerHelper {
     }
 
     public void onMainActivityDestroy() {
-        multiPlayerServiceHelper.stopDiscovery();
         multiPlayerServiceHelper.tearDown();
+        multiPlayerServiceHelper.stopDiscovery();
+        mConnection.tearDown();
     }
 
     public void onAppTerminate() {
-        mConnection.tearDown();
+        //mConnection.tearDown();
     }
 
     public Handler getHandler() {
@@ -100,7 +103,7 @@ public class MultiPlayerHelper {
             GameMessage message = (GameMessage) msg.getData().getSerializable("message");
 
             if (message.type == GameMessage.Type.ConnectionRequest) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+                dialog = new AlertDialog.Builder(mContext);
                 dialog.setTitle("Richiesta di connessione");
                 dialog.setCancelable(false);
                 dialog.setMessage("Un dispositivo vuole giocare con te, accetti?");
@@ -117,6 +120,12 @@ public class MultiPlayerHelper {
                     }
                 });
                 dialog.show();
+            }
+
+            if(message.type == GameMessage.Type.ConnectionClosed) {
+                if(multiPlayerConnectionWaitDialog != null)
+                    multiPlayerConnectionWaitDialog.dismiss();
+                mConnection.disconnectClient();
             }
 
             if(message.type == GameMessage.Type.ConnectionAccepted) {
@@ -124,26 +133,6 @@ public class MultiPlayerHelper {
                     multiPlayerConnectionWaitDialog.dismiss();
                 Intent intent = new Intent(mContext, ScreenActivity.class);
                 mContext.startActivity(intent);
-            }
-
-            if (message.type == GameMessage.Type.ConnectionRequest) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-                dialog.setTitle("Richiesta di connessione");
-                dialog.setCancelable(false);
-                dialog.setMessage("Un dispositivo vuole giocare con te, accetti?");
-                dialog.setIcon(android.R.drawable.ic_dialog_alert);
-                dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        mConnection.connectToClient();
-                    }
-                });
-                dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        mConnection.disconnectClient();
-                    }
-                });
-                dialog.show();
             }
         }
     }
