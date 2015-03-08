@@ -3,7 +3,6 @@ package polimi.it.trovalintruso.network;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,9 +18,7 @@ import butterknife.OnItemClick;
 
 import polimi.it.trovalintruso.App;
 import polimi.it.trovalintruso.R;
-import polimi.it.trovalintruso.ScreenActivity;
 import polimi.it.trovalintruso.model.Device;
-import polimi.it.trovalintruso.model.GameMessage;
 
 /**
  * Created by Paolo on 01/03/2015.
@@ -37,7 +34,7 @@ public class MultiPlayerDiscoveryActivity extends Activity {
     @OnItemClick(R.id.devices_discovery_listView)
     void invitePlayer(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         Device device = (Device) arg0.getItemAtPosition(arg2);
-        App.multiPlayerHelper.connectToClient(device.getService().getHost(), device.getService().getPort());
+        App.gameHelper.connectToClient(device.getService().getHost(), device.getService().getPort());
         //App.mConnection.sendMessage(new GameMessage(GameMessage.Type.ConnectionRequest));
 
     }
@@ -71,28 +68,28 @@ public class MultiPlayerDiscoveryActivity extends Activity {
 
     @Override
     protected void onPause() {
-        App.multiPlayerHelper.removeServiceDiscoveryHandler();
+        App.gameHelper.removeServiceDiscoveryHandler();
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        App.multiPlayerHelper.onActivityResume(this);
+        App.gameHelper.onActivityResume(this);
         Handler updateHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 mArrayAdapter.notifyDataSetChanged();
             }
         };
-        App.multiPlayerHelper.setServiceDiscoveryHandler(updateHandler);
+        App.gameHelper.setServiceDiscoveryHandler(updateHandler);
     }
 
     private void initializeUi() {
         ButterKnife.inject(this);
         mArrayAdapter = new ArrayAdapter<Device>(this,
                 android.R.layout.simple_list_item_1,
-                App.multiPlayerHelper.getDeviceList());
+                App.gameHelper.getDeviceList());
         devicesListView.setAdapter(mArrayAdapter);
     }
 

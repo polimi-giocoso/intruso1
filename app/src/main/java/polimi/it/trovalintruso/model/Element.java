@@ -3,10 +3,14 @@ package polimi.it.trovalintruso.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by poool on 09/02/15.
  */
-public class Element implements Parcelable {
+public class Element implements Parcelable, Serializable {
+
+    private final static long serialVersionUID = 5L;
 
     private String _drawableIdentifier;
     private Boolean _isTarget;

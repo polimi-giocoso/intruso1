@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -21,7 +22,9 @@ import polimi.it.trovalintruso.R;
 /**
  * Created by poool on 09/02/15.
  */
-public class Game implements Parcelable {
+public class Game implements Parcelable, Serializable {
+
+    private final static long serialVersionUID = 2L;
 
     private Settings _settings;
     private ArrayList<Screen> _screens;
@@ -86,6 +89,17 @@ public class Game implements Parcelable {
         //DemoData();
         fillScreens();
         _activeScreen = 0;
+    }
+
+    public void initializeMultiplayerSession(boolean guest) {
+        int start;
+        if(!guest)
+            start = 1;
+        else
+            start = 0;
+        for(int i = start; i < _screens.size(); i+=2) {
+            _screens.get(i).setYourTurn(false);
+        }
     }
 
     private void fillScreens() {

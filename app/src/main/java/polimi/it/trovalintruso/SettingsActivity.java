@@ -1,14 +1,10 @@
 package polimi.it.trovalintruso;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.widget.Button;
 
 import org.json.JSONException;
@@ -21,7 +17,6 @@ import butterknife.OnClick;
 
 import polimi.it.trovalintruso.model.Category;
 import polimi.it.trovalintruso.model.Game;
-import polimi.it.trovalintruso.model.GameMessage;
 import polimi.it.trovalintruso.model.Settings;
 import polimi.it.trovalintruso.network.MultiPlayerDiscoveryActivity;
 
@@ -59,7 +54,7 @@ public class SettingsActivity extends Activity {
         context = this;
         initializeGame();
         initializeUI();
-        App.multiPlayerHelper.onMainActivityCreate();
+        App.gameHelper.onMainActivityCreate();
     }
 
     @Override
@@ -70,7 +65,7 @@ public class SettingsActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        App.multiPlayerHelper.onActivityResume(this);
+        App.gameHelper.onActivityResume(this);
         /*App.mConnection.setmUpdateHandler(new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -87,7 +82,7 @@ public class SettingsActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        App.multiPlayerHelper.onMainActivityDestroy();
+        App.gameHelper.onMainActivityDestroy();
         super.onDestroy();
     }
 
@@ -161,13 +156,15 @@ public class SettingsActivity extends Activity {
 
     @OnClick(R.id.button_start_game) void startGame() {
         App.game = game;
+        App.gameHelper.startGame();
+        /*App.game = game;
+        game.initialize();
         Intent intent;
         if(game.getSettings().get_singlePlayer())
             intent = new Intent(context, ScreenActivity.class);
         else
             intent = new Intent(context, MultiPlayerDiscoveryActivity.class);
         String pkg = context.getPackageName();
-        //intent.putExtra(pkg + ".game", game);
-        context.startActivity(intent);
+        context.startActivity(intent);*/
     }
 }

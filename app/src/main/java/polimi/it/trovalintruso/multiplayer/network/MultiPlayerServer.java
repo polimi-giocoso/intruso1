@@ -60,9 +60,9 @@ class MultiPlayerServer {
                             InetAddress address = mSocket.getInetAddress();
                             connectToServer(address, port);*/
                     }
-                    else {
+                    /*else {
                         mConnection.connectionAccepted();
-                    }
+                    }*/
                 }
             } catch (IOException e) {
                 Log.e(TAG, "Error creating ServerSocket: ", e);

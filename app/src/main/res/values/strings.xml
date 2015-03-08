@@ -31,5 +31,6 @@
     <string name="invite_player">Invita giocatore</string>
     <string name="wait">Attendi</string>
     <string name="inviting_player">Sto invitando il giocatore...</string>
+    <string name="initializing_game">Inizializzo il gioco...</string>
 
 </resources>

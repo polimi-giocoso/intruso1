@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import polimi.it.trovalintruso.R;
@@ -18,7 +19,9 @@ import polimi.it.trovalintruso.R;
 /**
  * Created by poool on 09/02/15.
  */
-public class Settings implements Parcelable {
+public class Settings implements Parcelable, Serializable {
+
+    private final static long serialVersionUID = 4L;
 
     //public static enum ObjectsForPage { Four, Five, Six }
 

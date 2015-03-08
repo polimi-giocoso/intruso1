@@ -4,10 +4,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by poool on 24/02/15.
  */
-public class CategoryGroup {
+public class CategoryGroup implements Serializable {
+
+    private final static long serialVersionUID = 9L;
 
     private String _target;
     private String[] _others;

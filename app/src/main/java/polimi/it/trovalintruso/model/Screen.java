@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,12 +15,15 @@ import java.util.Random;
 /**
  * Created by poool on 09/02/15.
  */
-public class Screen implements Parcelable {
+public class Screen implements Parcelable, Serializable {
+
+    private final static long serialVersionUID = 3L;
 
     private ArrayList<Element> _elements;
     private DateTime _start;
     private DateTime _end;
     private int _incorrectAttempts;
+    private boolean _yourTurn;
 
     //getters & setters
 
@@ -36,7 +40,16 @@ public class Screen implements Parcelable {
     }
 
     public Screen() {
+        _yourTurn = true;
         _incorrectAttempts = 0;
+    }
+
+    public boolean isYourTurn() {
+        return _yourTurn;
+    }
+
+    public void setYourTurn(boolean value) {
+        _yourTurn = value;
     }
 
     //game methods

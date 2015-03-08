@@ -28,8 +28,8 @@ class MultiPlayerClient {
 
     private Thread mSendThread;
     private Thread mRecThread;
-    //private Thread mAliveThread;
     private MultiPlayerConnectionHelper mConnection;
+    private ObjectOutputStream out;
 
     public MultiPlayerClient(InetAddress address, int port, MultiPlayerConnectionHelper connection) {
         mConnection = connection;
@@ -53,23 +53,29 @@ class MultiPlayerClient {
         @Override
         public void run() {
             try {
-                //if (mConnection.getSocket() == null) {
+                if (mConnection.getSocket() == null) {
                     mConnection.setSocket(new Socket(mAddress, PORT));
                     Log.d(CLIENT_TAG, "Client-side socket initialized.");
+                    out = new ObjectOutputStream(mConnection.getSocket().getOutputStream());
 
-                /*} else {
+                } else {
+                    out = new ObjectOutputStream(mConnection.getSocket().getOutputStream());
+                    sendMessage(new GameMessage(GameMessage.Type.ConnectionAccepted));
                     Log.d(CLIENT_TAG, "Socket already initialized. skipping!");
-                }*/
-
+                }
                 mRecThread = new Thread(new ReceivingThread());
                 mRecThread.start();
-                //mAliveThread = new Thread(new IsAliveThread());
-                //mAliveThread.start();
 
             } catch (UnknownHostException e) {
                 Log.d(CLIENT_TAG, "Initializing socket failed, UHE", e);
             } catch (IOException e) {
                 Log.d(CLIENT_TAG, "Initializing socket failed, IOE.", e);
+                GameMessage message = new GameMessage(GameMessage.Type.ConnectionClosed);
+                Bundle messageBundle = new Bundle();
+                messageBundle.putSerializable("message", message);
+                Message msg = new Message();
+                msg.setData(messageBundle);
+                mConnection.mUpdateHandler.sendMessage(msg);
             }
 
             while (true) {
@@ -90,20 +96,8 @@ class MultiPlayerClient {
 
             ObjectInputStream input;
             try {
-                //input = new BufferedReader(new InputStreamReader(
-                //mSocket.getInputStream()));
                 input = new ObjectInputStream(mConnection.getSocket().getInputStream());
                 while (!Thread.currentThread().isInterrupted()) {
-
-                        /*String messageStr = null;
-                        messageStr = input.readLine();
-                        if (messageStr != null) {
-                            Log.d(CLIENT_TAG, "Read from the stream: " + messageStr);
-                            updateMessages(messageStr, false);
-                        } else {
-                            Log.d(CLIENT_TAG, "The nulls! The nulls!");
-                            break;
-                        }*/
                     GameMessage message = null;
                     try {
                         message = (GameMessage)input.readObject();
@@ -134,7 +128,7 @@ class MultiPlayerClient {
         }
     }
 
-    class IsAliveThread implements Runnable {
+    /*class IsAliveThread implements Runnable {
 
         @Override
         public void run() {
@@ -161,11 +155,12 @@ class MultiPlayerClient {
                 mConnection.mUpdateHandler.sendMessage(msg);
             }
         }
-    }
+    }*/
 
     public void tearDown() {
         try {
-            mConnection.getSocket().close();
+            if(mConnection.getSocket() != null)
+                mConnection.getSocket().close();
             mRecThread.interrupt();
             mSendThread.interrupt();
             //mAliveThread.interrupt();
@@ -184,7 +179,6 @@ class MultiPlayerClient {
                 Log.d(CLIENT_TAG, "Socket output stream is null, wtf?");
                 return false;
             }
-            ObjectOutputStream out = new ObjectOutputStream(mConnection.getSocket().getOutputStream());
             out.writeObject(msg);
             out.flush();
                 /*PrintWriter out = new PrintWriter(

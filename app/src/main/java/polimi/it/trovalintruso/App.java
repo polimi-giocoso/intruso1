@@ -1,13 +1,10 @@
 package polimi.it.trovalintruso;
 
 import android.app.Application;
-import android.util.Log;
 
 import polimi.it.trovalintruso.helpers.CategoryManager;
 import polimi.it.trovalintruso.model.Game;
-import polimi.it.trovalintruso.multiplayer.MultiPlayerHelper;
-import polimi.it.trovalintruso.multiplayer.network.MultiPlayerConnectionHelper;
-import polimi.it.trovalintruso.multiplayer.MultiPlayerServiceHelper;
+import polimi.it.trovalintruso.multiplayer.GameHelper;
 
 /**
  * Created by poool on 01/03/15.
@@ -16,7 +13,7 @@ public class App extends Application {
 
     //public static MultiPlayerServiceHelper multiPlayerServiceHelper;
     //public static MultiPlayerConnectionHelper mConnection;
-    public static MultiPlayerHelper multiPlayerHelper;
+    public static GameHelper gameHelper;
 
     public static Game game;
 
@@ -26,13 +23,13 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         _categoryManager = new CategoryManager(getBaseContext());
-        App.multiPlayerHelper = new MultiPlayerHelper(getBaseContext());
+        App.gameHelper = new GameHelper(getBaseContext());
     }
 
     @Override
     public void onTerminate() {
         super.onTerminate();
-        multiPlayerHelper.onAppTerminate();
+        gameHelper.onAppTerminate();
     }
 
     public static CategoryManager getCategoryManager() {

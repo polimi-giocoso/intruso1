@@ -7,14 +7,20 @@ import java.io.Serializable;
  */
 public class GameMessage implements Serializable {
 
+    private final static long serialVersionUID = 1L;
+
     public enum Type {
         ConnectionRequest,
         ConnectionAccepted,
         ConnectionClosed,
-        Ping,
+        //Ping,
         SendGame,
         SendGameAck,
-        ObjectPressed
+        StartGame,
+        StartGameAck,
+        TargetPressed,
+        ElementPressed,
+        NextScreen
     }
 
     public String msg;

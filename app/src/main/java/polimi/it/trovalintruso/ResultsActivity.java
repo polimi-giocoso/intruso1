@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,7 +12,6 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import polimi.it.trovalintruso.model.Game;
 import polimi.it.trovalintruso.ui.ResultsAdapter;
 
 
@@ -56,7 +52,7 @@ public class ResultsActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        App.multiPlayerHelper.onActivityResume(this);
+        App.gameHelper.onActivityResume(this);
     }
 
     private void initializeUi() {
