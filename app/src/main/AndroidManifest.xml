@@ -18,7 +18,8 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar" >
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,6 +40,15 @@
             android:theme="@android:style/Theme.Holo.Light.NoActionBar"
             android:name=".network.MultiPlayerDiscoveryActivity"
             android:label="@string/title_activity_results" >
+        </activity>
+        <activity
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"
+            android:name=".ConfigDeviceActivity"
+            android:label="@string/settings" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

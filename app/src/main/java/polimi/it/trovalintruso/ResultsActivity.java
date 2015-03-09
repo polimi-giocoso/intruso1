@@ -42,6 +42,11 @@ public class ResultsActivity extends Activity {
         String pkg = context.getPackageName();
         //game = getIntent().getExtras().getParcelable(pkg + ".game");
         initializeUi();
+        if(!App.gameHelper.isServer()) {
+            restart_game.setEnabled(false);
+            quit_game.setEnabled(false);
+        }
+        App.gameHelper.registerCurrentActivity(this);
     }
 
     @Override
@@ -63,19 +68,10 @@ public class ResultsActivity extends Activity {
     }
 
     @OnClick(R.id.button_quit_game) void quit() {
-        Intent intent = new Intent(context, SettingsActivity.class);
-        String pkg = context.getPackageName();
-        //intent.putExtra(pkg + ".game", game);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(intent);
+        App.gameHelper.quitGame();
     }
 
     @OnClick(R.id.button_restart_game) void restart() {
-        Intent intent = new Intent(context, ScreenActivity.class);
-        String pkg = context.getPackageName();
-        App.game.restart();
-        //intent.putExtra(pkg + ".game", game);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(intent);
+        App.gameHelper.restartGame();
     }
 }

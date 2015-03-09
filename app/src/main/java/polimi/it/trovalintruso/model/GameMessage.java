@@ -23,7 +23,7 @@ public class GameMessage implements Serializable {
         NextScreen
     }
 
-    public String msg;
+    public Serializable msg;
     public Type type;
 
     public GameMessage(Type _type) {

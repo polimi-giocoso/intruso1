@@ -52,6 +52,22 @@ public class Screen implements Parcelable, Serializable {
         _yourTurn = value;
     }
 
+    public DateTime getStart() {
+        return _start;
+    }
+
+    public void setStart(DateTime value) {
+        _start = value;
+    }
+
+    public DateTime getEnd() {
+        return _end;
+    }
+
+    public void setEnd(DateTime value) {
+        _end = value;
+    }
+
     //game methods
 
     /*public void initialize(ArrayList<Element> objects) {
@@ -78,6 +94,7 @@ public class Screen implements Parcelable, Serializable {
         _start = null;
         _end = null;
         _incorrectAttempts = 0;
+        _yourTurn = true;
     }
 
     public void start() {

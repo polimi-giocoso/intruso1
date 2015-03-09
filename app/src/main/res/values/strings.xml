@@ -32,5 +32,7 @@
     <string name="wait">Attendi</string>
     <string name="inviting_player">Sto invitando il giocatore...</string>
     <string name="initializing_game">Inizializzo il gioco...</string>
+    <string name="config_device">Configura il tablet</string>
+    <string name="settings">Configura</string>
 
 </resources>

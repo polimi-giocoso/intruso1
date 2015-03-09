@@ -1,21 +1,19 @@
 package polimi.it.trovalintruso.multiplayer;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.View;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.joda.time.DateTime;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -30,12 +28,12 @@ import polimi.it.trovalintruso.App;
 import polimi.it.trovalintruso.R;
 import polimi.it.trovalintruso.ResultsActivity;
 import polimi.it.trovalintruso.ScreenActivity;
+import polimi.it.trovalintruso.SettingsActivity;
 import polimi.it.trovalintruso.model.Device;
-import polimi.it.trovalintruso.model.Element;
 import polimi.it.trovalintruso.model.Game;
 import polimi.it.trovalintruso.model.GameMessage;
 import polimi.it.trovalintruso.multiplayer.network.Base64Coder;
-import polimi.it.trovalintruso.multiplayer.network.MultiPlayerConnectionHelper;
+import polimi.it.trovalintruso.multiplayer.network.ConnectionHelper;
 import polimi.it.trovalintruso.network.MultiPlayerDiscoveryActivity;
 
 /**
@@ -44,25 +42,28 @@ import polimi.it.trovalintruso.network.MultiPlayerDiscoveryActivity;
 public class GameHelper {
 
     private MultiPlayerServiceHelper multiPlayerServiceHelper;
-    private MultiPlayerConnectionHelper mConnection;
+    private ConnectionHelper mConnection;
     private Context mContext;
     private ProgressDialog multiPlayerConnectionWaitDialog;
     private ProgressDialog multiPlayerInitializationWaitDialog;
     private Handler mHandler;
     private AlertDialog.Builder dialog;
-    private boolean _connected;
 
-    private ScreenActivity _currentScreenActivity;
+    private Activity _currentActivity;
+
+    private String deviceName;
+    private boolean isServer;
 
     public GameHelper(Context context) {
         mContext = context;
         mHandler = new MultiPlayerHandler();
-        _connected = false;
     }
 
     private void init() {
+        SharedPreferences sharedPref = mContext.getApplicationContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        deviceName = sharedPref.getString("dev_name", "");
         multiPlayerServiceHelper = new MultiPlayerServiceHelper(mContext);
-        mConnection = new MultiPlayerConnectionHelper(mHandler);
+        mConnection = new ConnectionHelper(mHandler);
         multiPlayerServiceHelper.initializeNsd();
         if(mConnection.getLocalPort() > -1) {
             multiPlayerServiceHelper.registerService(mConnection.getLocalPort());
@@ -71,8 +72,16 @@ public class GameHelper {
         }
     }
 
-    public void registerCurrentScreenActivity(ScreenActivity activity) {
-        _currentScreenActivity = activity;
+    public boolean isServer() {
+        return isServer;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void registerCurrentActivity(Activity activity) {
+        _currentActivity = activity;
     }
 
     public void onActivityResume(Context context) {
@@ -91,11 +100,6 @@ public class GameHelper {
     }
 
     public void onAppTerminate() {
-        //mConnection.tearDown();
-    }
-
-    public Handler getHandler() {
-        return mHandler;
     }
 
     public void connectToClient(InetAddress address, int port) {
@@ -103,7 +107,7 @@ public class GameHelper {
         multiPlayerConnectionWaitDialog = ProgressDialog.show(mContext,
                 mContext.getString(R.string.wait),
                 mContext.getString(R.string.inviting_player), true);
-        _connected = true;
+        isServer = true;
     }
 
     public void removeServiceDiscoveryHandler() {
@@ -138,7 +142,7 @@ public class GameHelper {
                 dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         mConnection.connectToClient();
-                        _connected = true;
+                        isServer = false;
                         multiPlayerInitializationWaitDialog = ProgressDialog.show(mContext,
                                 mContext.getString(R.string.wait),
                                 mContext.getString(R.string.initializing_game), true);
@@ -148,16 +152,18 @@ public class GameHelper {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         mConnection.disconnectClient();
-                        _connected = false;
+                        //_connected = false;
                     }
                 });
                 dialog.show();
             }
 
             if(message.type == GameMessage.Type.ConnectionClosed) {
-                if(multiPlayerConnectionWaitDialog != null)
+                ActivityManager am = (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
+                ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+                if(multiPlayerConnectionWaitDialog != null && multiPlayerConnectionWaitDialog.isShowing())
                     multiPlayerConnectionWaitDialog.dismiss();
-                else {
+                else if(_currentActivity instanceof ScreenActivity) {
                     dialog = new AlertDialog.Builder(mContext);
                     dialog.setTitle("Errore");
                     dialog.setCancelable(false);
@@ -165,16 +171,21 @@ public class GameHelper {
                     dialog.setIcon(android.R.drawable.ic_dialog_alert);
                     dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(mContext, ScreenActivity.class);
-                            String pkg = mContext.getPackageName();
+                            Intent intent = new Intent(mContext, SettingsActivity.class);
                             App.game.restart();
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             mContext.startActivity(intent);
                         }
                     });
+                    dialog.show();
+                }
+                else if(_currentActivity instanceof ResultsActivity) {
+                    Intent intent = new Intent(mContext, SettingsActivity.class);
+                    String pkg = mContext.getPackageName();
+                    App.game.restart();
+                    mContext.startActivity(intent);
                 }
                 mConnection.disconnectClient();
-                _connected = false;
+                //_connected = false;
             }
 
             if(message.type == GameMessage.Type.ConnectionAccepted) {
@@ -183,52 +194,59 @@ public class GameHelper {
                 multiPlayerInitializationWaitDialog = ProgressDialog.show(mContext,
                         mContext.getString(R.string.wait),
                         mContext.getString(R.string.initializing_game), true);
-                _connected = true;
+                //_connected = true;
                 sendGameInfo();
             }
 
             if(message.type == GameMessage.Type.SendGame) {
-                try {
-                    App.game = (Game) fromString(message.msg);
+                //try {
+                    App.game = (Game) message.msg; //fromString(message.msg);
                     App.game.initializeMultiplayerSession(true);
                     GameMessage ack = new GameMessage(GameMessage.Type.SendGameAck);
                     mConnection.sendMessage(ack);
-                } catch (IOException e) {
+                /*} catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
-                }
+                }*/
                 mConnection.sendMessage(new GameMessage(GameMessage.Type.SendGameAck));
-                startMultiplayerSession();
+                if(multiPlayerInitializationWaitDialog != null && multiPlayerInitializationWaitDialog.isShowing())
+                    multiPlayerInitializationWaitDialog.dismiss();
+                startGameSession();
             }
 
             if(message.type == GameMessage.Type.SendGameAck) {
-                startMultiplayerSession();
+                if(multiPlayerInitializationWaitDialog != null && multiPlayerInitializationWaitDialog.isShowing())
+                    multiPlayerInitializationWaitDialog.dismiss();
+                startGameSession();
             }
 
             if(message.type == GameMessage.Type.NextScreen) {
+                DateTime[] times = (DateTime[]) message.msg;
+                App.game.getActiveScreen().setStart(times[0]);
+                App.game.getActiveScreen().setEnd(times[1]);
                 moveToNextScreen();
             }
 
-            if(message.type == GameMessage.Type.ElementPressed) {
-                int index = Integer.valueOf(message.msg);
-                _currentScreenActivity.elementFeedback(index);
+            if(message.type == GameMessage.Type.ElementPressed && _currentActivity instanceof ScreenActivity) {
+                int index = (int) message.msg;
+                ((ScreenActivity)_currentActivity).elementFeedback(index);
             }
         }
     }
 
     private void sendGameInfo() {
         GameMessage message = new GameMessage(GameMessage.Type.SendGame);
-        try {
-            message.msg = toString(App.game);
+        //try {
+            message.msg = App.game;//toString(App.game);
             mConnection.sendMessage(message);
-        } catch (IOException e) {
+        /*} catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         App.game.initializeMultiplayerSession(false);
     }
 
-    public void startMultiplayerSession() {
+    public void startGameSession() {
         Intent intent = new Intent(mContext, ScreenActivity.class);
         mContext.startActivity(intent);
     }
@@ -243,9 +261,31 @@ public class GameHelper {
         mContext.startActivity(intent);
     }
 
+    public void restartGame() {
+        App.game.restart();
+        if(!App.game.getSettings().get_singlePlayer())
+            sendGameInfo();
+        else
+            startGameSession();
+    }
+
+    public void quitGame() {
+        App.game.restart();
+        if(!App.game.getSettings().get_singlePlayer()) {
+            //mConnection.isConnected = false;
+            mConnection.disconnectClient();
+        }
+        Intent intent = new Intent(mContext, SettingsActivity.class);
+        mContext.startActivity(intent);
+    }
+
     public void nextScreen() {
         if (!App.game.getSettings().get_singlePlayer()) {
             GameMessage message = new GameMessage(GameMessage.Type.NextScreen);
+            DateTime[] times = new DateTime[2];
+            times[0] = App.game.getActiveScreen().getStart();
+            times[1] = App.game.getActiveScreen().getEnd();
+            message.msg = times;
             mConnection.sendMessage(message);
         }
         moveToNextScreen();
@@ -254,7 +294,7 @@ public class GameHelper {
 
     public void elementPressed(int index) {
         GameMessage message = new GameMessage(GameMessage.Type.ElementPressed);
-        message.msg = String.valueOf(index);
+        message.msg = index;//String.valueOf(index);
         mConnection.sendMessage(message);
     }
 

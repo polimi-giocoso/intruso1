@@ -24,7 +24,7 @@ import polimi.it.trovalintruso.network.MultiPlayerDiscoveryActivity;
 public class SettingsActivity extends Activity {
 
     Settings gameSettings;
-    Game game;
+    //Game game;
     ArrayList<Category> categories;
     Context context;
 
@@ -55,6 +55,7 @@ public class SettingsActivity extends Activity {
         initializeGame();
         initializeUI();
         App.gameHelper.onMainActivityCreate();
+        App.gameHelper.registerCurrentActivity(this);
     }
 
     @Override
@@ -109,7 +110,6 @@ public class SettingsActivity extends Activity {
             gameSettings.setNumOfObjects(4);
             gameSettings.setNumOfScreens(1);
             //gameSettings.setTimeLimitEnabled(false);
-            game = new Game(gameSettings);
         }
         catch(JSONException e) {
 
@@ -143,28 +143,8 @@ public class SettingsActivity extends Activity {
         initializeUI();
     }
 
-    /*@OnClick(R.id.button_config_time_limit) void ButtomTimeLimitClick() {
-        if(gameSettings.getTimeLimitEnabled()) {
-            gameSettings.setTimeLimitEnabled(false);
-        }
-        else {
-            gameSettings.setTimeLimitEnabled(true);
-            gameSettings.set_timeLimit(5000);
-        }
-        initializeUI();
-    }*/
-
     @OnClick(R.id.button_start_game) void startGame() {
-        App.game = game;
+        App.game = new Game(gameSettings);
         App.gameHelper.startGame();
-        /*App.game = game;
-        game.initialize();
-        Intent intent;
-        if(game.getSettings().get_singlePlayer())
-            intent = new Intent(context, ScreenActivity.class);
-        else
-            intent = new Intent(context, MultiPlayerDiscoveryActivity.class);
-        String pkg = context.getPackageName();
-        context.startActivity(intent);*/
     }
 }

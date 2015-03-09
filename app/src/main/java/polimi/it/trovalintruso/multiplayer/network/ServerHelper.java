@@ -7,17 +7,17 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 /**
- * Created by poool on 02/03/15.
+ * Created by poool on 09/03/15.
  */
-class MultiPlayerServer {
+public class ServerHelper {
 
     private static final String TAG = "MultiPlayerConnection";
 
     ServerSocket mServerSocket = null;
     Thread mThread = null;
-    MultiPlayerConnectionHelper mConnection;
+    ConnectionHelper mConnection;
 
-    public MultiPlayerServer(Handler handler, MultiPlayerConnectionHelper connection) {
+    public ServerHelper(Handler handler, ConnectionHelper connection) {
         mConnection = connection;
         try {
             mServerSocket = new ServerSocket(0);
@@ -45,11 +45,6 @@ class MultiPlayerServer {
         public void run() {
 
             try {
-                // Since discovery will happen via Nsd, we don't need to care which port is
-                // used.  Just grab an available one  and advertise it via Nsd.
-                //mServerSocket = new ServerSocket(0);
-                //mConnection.setLocalPort(mServerSocket.getLocalPort());
-
                 while (!Thread.currentThread().isInterrupted()) {
                     Log.d(TAG, "ServerSocket Created, awaiting connection");
                     mConnection.setSocket(mServerSocket.accept());

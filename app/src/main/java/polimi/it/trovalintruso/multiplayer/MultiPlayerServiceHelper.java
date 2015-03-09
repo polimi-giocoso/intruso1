@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 
+import polimi.it.trovalintruso.App;
 import polimi.it.trovalintruso.model.Device;
 
 /**
@@ -29,7 +30,6 @@ public class MultiPlayerServiceHelper {
     public static final String TAG = "NsdHelper";
     private final String SERVICE_NAME = "NsdTrovaIntruso1";
     public String mServiceName = "NsdTrovaIntruso1";
-    public String mDeviceName = "Polpo";
 
     NsdServiceInfo mService;
 
@@ -132,11 +132,8 @@ public class MultiPlayerServiceHelper {
                 return;
             }
             mService = serviceInfo;
-            String name = "";
-            /*if(serviceInfo.getAttributes().containsKey("deviceName")) {
-                name =  new String(serviceInfo.getAttributes().get("deviceName"));
-            }*/
-            Device dev = new Device(serviceInfo, name);
+            String[] names = serviceInfo.getServiceName().split("@");
+            Device dev = new Device(serviceInfo, names[1]);
             Boolean found = false;
             for(Device d : mDeviceList) {
                 if(d.equals(dev))
@@ -176,7 +173,7 @@ public class MultiPlayerServiceHelper {
     public void registerService(int port) {
         NsdServiceInfo serviceInfo  = new NsdServiceInfo();
         serviceInfo.setPort(port);
-        serviceInfo.setServiceName(SERVICE_NAME);
+        serviceInfo.setServiceName(SERVICE_NAME + "@" + App.gameHelper.getDeviceName() + "@");
         serviceInfo.setServiceType(SERVICE_TYPE);
         //serviceInfo.setAttribute("deviceName", mDeviceName);
 

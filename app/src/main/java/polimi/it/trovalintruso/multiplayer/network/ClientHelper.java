@@ -8,19 +8,21 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-import polimi.it.trovalintruso.model.Category;
 import polimi.it.trovalintruso.model.GameMessage;
 
 /**
- * Created by poool on 02/03/15.
+ * Created by poool on 09/03/15.
  */
-class MultiPlayerClient {
+public class ClientHelper {
+
     private InetAddress mAddress;
     private int PORT;
 
@@ -28,10 +30,10 @@ class MultiPlayerClient {
 
     private Thread mSendThread;
     private Thread mRecThread;
-    private MultiPlayerConnectionHelper mConnection;
+    private ConnectionHelper mConnection;
     private ObjectOutputStream out;
 
-    public MultiPlayerClient(InetAddress address, int port, MultiPlayerConnectionHelper connection) {
+    public ClientHelper(InetAddress address, int port, ConnectionHelper connection) {
         mConnection = connection;
         Log.d(CLIENT_TAG, "Creating multiPlayerClient");
         this.mAddress = address;
@@ -58,6 +60,8 @@ class MultiPlayerClient {
                     Log.d(CLIENT_TAG, "Client-side socket initialized.");
                     out = new ObjectOutputStream(mConnection.getSocket().getOutputStream());
                 } else {
+                    if(mConnection.getSocket().isClosed())
+                        mConnection.setSocket(new Socket(mAddress, PORT));
                     out = new ObjectOutputStream(mConnection.getSocket().getOutputStream());
                     sendMessage(new GameMessage(GameMessage.Type.ConnectionAccepted));
                     Log.d(CLIENT_TAG, "Socket already initialized. skipping!");
@@ -69,12 +73,7 @@ class MultiPlayerClient {
                 Log.d(CLIENT_TAG, "Initializing socket failed, UHE", e);
             } catch (IOException e) {
                 Log.d(CLIENT_TAG, "Initializing socket failed, IOE.", e);
-                GameMessage message = new GameMessage(GameMessage.Type.ConnectionClosed);
-                Bundle messageBundle = new Bundle();
-                messageBundle.putSerializable("message", message);
-                Message msg = new Message();
-                msg.setData(messageBundle);
-                mConnection.mUpdateHandler.sendMessage(msg);
+                sendCloseMessage();
             }
 
             while (true) {
@@ -115,42 +114,33 @@ class MultiPlayerClient {
                 }
                 input.close();
 
-            } catch (Exception e) {
+            }catch (Exception e) {
                 Log.e(CLIENT_TAG, "Server loop error: ", e);
-                GameMessage message = new GameMessage(GameMessage.Type.ConnectionClosed);
-                Bundle messageBundle = new Bundle();
-                messageBundle.putSerializable("message", message);
-                Message msg = new Message();
-                msg.setData(messageBundle);
-                mConnection.mUpdateHandler.sendMessage(msg);
+                sendCloseMessage();
             }
         }
     }
 
-    class IsAliveThread implements Runnable {
+    /*class IsAliveThread implements Runnable {
 
         @Override
         public void run() {
-
-            BufferedInputStream input;
-            try {
-                if(mConnection.getSocket() != null) {
-                    if(mConnection.getSocket().isClosed()) {
-                        GameMessage message = new GameMessage(GameMessage.Type.ConnectionClosed);
-                        Bundle messageBundle = new Bundle();
-                        messageBundle.putSerializable("message", message);
-                        Message msg = new Message();
-                        msg.setData(messageBundle);
-                        mConnection.mUpdateHandler.sendMessage(msg);
-                        tearDown();
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    if (mConnection.getSocket() != null) {
+                        PrintWriter out = new PrintWriter(mConnection.getSocket().getOutputStream(), true);
+                        if (out.checkError()) {
+                            sendCloseMessage();
+                            Thread.currentThread().interrupt();
+                        }
                     }
-                }
 
-            } catch (Exception e) {
-                Log.e(CLIENT_TAG, "Server loop error: ", e);
+                } catch (Exception e) {
+                    Log.e(CLIENT_TAG, "Server loop error: ", e);
+                }
             }
         }
-    }
+    }*/
 
     public void tearDown() {
         try {
@@ -160,7 +150,8 @@ class MultiPlayerClient {
                 mRecThread.interrupt();
             if(mSendThread != null)
                 mSendThread.interrupt();
-            //mAliveThread.interrupt();
+            //if(mAliveThread != null)
+                //mAliveThread.interrupt();
         } catch (IOException ioe) {
             Log.e(CLIENT_TAG, "Error when closing server socket.");
         }
@@ -187,5 +178,14 @@ class MultiPlayerClient {
         }
         Log.d(CLIENT_TAG, "Client sent message: " + msg);
         return true;
+    }
+
+    private void sendCloseMessage() {
+        GameMessage message = new GameMessage(GameMessage.Type.ConnectionClosed);
+        Bundle messageBundle = new Bundle();
+        messageBundle.putSerializable("message", message);
+        Message msg = new Message();
+        msg.setData(messageBundle);
+        mConnection.mUpdateHandler.sendMessage(msg);
     }
 }

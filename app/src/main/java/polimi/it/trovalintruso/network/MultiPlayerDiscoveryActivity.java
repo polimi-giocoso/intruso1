@@ -35,10 +35,8 @@ public class MultiPlayerDiscoveryActivity extends Activity {
     void invitePlayer(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
         Device device = (Device) arg0.getItemAtPosition(arg2);
         App.gameHelper.connectToClient(device.getService().getHost(), device.getService().getPort());
-        //App.mConnection.sendMessage(new GameMessage(GameMessage.Type.ConnectionRequest));
 
     }
-
     private ArrayAdapter<Device> mArrayAdapter;
 
     @Override
@@ -48,22 +46,6 @@ public class MultiPlayerDiscoveryActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         initializeUi();
         context = this;
-        /*App.mConnection.setmUpdateHandler(new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                GameMessage message = (GameMessage) msg.getData().getSerializable("message");
-                if(message.type == GameMessage.Type.ConnectionAccepted) {
-
-                    dialog.dismiss();
-                    Intent intent = new Intent(context, ScreenActivity.class);
-                    context.startActivity(intent);
-                }
-                if(message.type == GameMessage.Type.SendGameAck) {
-
-                }
-            }
-        });*/
     }
 
     @Override

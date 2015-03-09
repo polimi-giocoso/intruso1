@@ -12,13 +12,12 @@ import java.net.Socket;
 import polimi.it.trovalintruso.model.GameMessage;
 
 /**
- * Created by Paolo on 01/03/2015.
+ * Created by poool on 09/03/15.
  */
-public class MultiPlayerConnectionHelper {
-
+public class ConnectionHelper {
     protected Handler mUpdateHandler;
-    protected MultiPlayerServer mMultiPlayerServer;
-    protected MultiPlayerClient mMultiPlayerClient;
+    protected ServerHelper mMultiPlayerServer;
+    protected ClientHelper mMultiPlayerClient;
 
     private static final String TAG = "MultiPlayerConnection";
 
@@ -29,9 +28,9 @@ public class MultiPlayerConnectionHelper {
         mUpdateHandler = handler;
     }
 
-    public MultiPlayerConnectionHelper(Handler handler) {
+    public ConnectionHelper(Handler handler) {
         mUpdateHandler = handler;
-        mMultiPlayerServer = new MultiPlayerServer(handler, this);
+        mMultiPlayerServer = new ServerHelper(handler, this);
     }
 
     public void tearDown() {
@@ -43,7 +42,6 @@ public class MultiPlayerConnectionHelper {
 
     public void disconnectClient() {
         if(mMultiPlayerClient != null) {
-            mMultiPlayerClient.sendMessage(new GameMessage(GameMessage.Type.ConnectionClosed));
             mMultiPlayerClient.tearDown();
             mMultiPlayerClient = null;
         }
@@ -59,7 +57,7 @@ public class MultiPlayerConnectionHelper {
     }
 
     public void connectToServer(InetAddress address, int port) {
-        mMultiPlayerClient = new MultiPlayerClient(address, port, this);
+        mMultiPlayerClient = new ClientHelper(address, port, this);
     }
 
     public void connectToClient() {
@@ -112,11 +110,11 @@ public class MultiPlayerConnectionHelper {
         mUpdateHandler.sendMessage(msg);
     }
 
-    protected void connectionAccepted() {
+    /*protected void connectionAccepted() {
         Bundle messageBundle = new Bundle();
         messageBundle.putSerializable("message", new GameMessage(GameMessage.Type.ConnectionAccepted));
         Message msg = new Message();
         msg.setData(messageBundle);
         mUpdateHandler.sendMessage(msg);
-    }
+    }*/
 }

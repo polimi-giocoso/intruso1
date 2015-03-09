@@ -64,7 +64,7 @@ public class ScreenActivity extends Activity {
                 }
             }
         });
-        App.gameHelper.registerCurrentScreenActivity(this);
+        App.gameHelper.registerCurrentActivity(this);
     }
 
     @Override
