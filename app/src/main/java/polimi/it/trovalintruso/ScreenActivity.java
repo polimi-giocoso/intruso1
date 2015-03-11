@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -65,6 +66,10 @@ public class ScreenActivity extends Activity {
             }
         });
         App.gameHelper.registerCurrentActivity(this);
+        if(!App.game.getSettings().singlePlayer()) {
+            String message = yourTurn ? getString(string.your_tyrn) : getString(string.opponent_turn);
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

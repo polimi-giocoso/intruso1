@@ -92,7 +92,7 @@ public class Settings implements Parcelable, Serializable {
         this._timeLimit = _timeLimit;
     }*/
 
-    public Boolean get_singlePlayer() {
+    public Boolean singlePlayer() {
         return _singlePlayer;
     }
 
@@ -137,7 +137,7 @@ public class Settings implements Parcelable, Serializable {
         //_timeLimit = in.readInt();
     }
 
-    public JSONObject getJsonObject() throws JSONException {
+    /*public JSONObject getJsonObject() throws JSONException {
         JSONObject obj = new JSONObject();
         obj.put("numOfScreens", _numOfScreens);
         obj.put("numOfObjects", _numOfObjects);
@@ -145,5 +145,5 @@ public class Settings implements Parcelable, Serializable {
         obj.put("singlePlayer", _singlePlayer);
         //obj.put("category", _category.getJsonObject());
         return obj;
-    }
+    }*/
 }

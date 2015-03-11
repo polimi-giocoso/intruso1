@@ -2,7 +2,6 @@ package polimi.it.trovalintruso;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Button;
@@ -18,7 +17,6 @@ import butterknife.OnClick;
 import polimi.it.trovalintruso.model.Category;
 import polimi.it.trovalintruso.model.Game;
 import polimi.it.trovalintruso.model.Settings;
-import polimi.it.trovalintruso.network.MultiPlayerDiscoveryActivity;
 
 
 public class SettingsActivity extends Activity {
@@ -90,7 +88,7 @@ public class SettingsActivity extends Activity {
     private void initializeUI() {
         ButterKnife.inject(this);
         config_category.setText(context.getString(R.string.category) + " " + gameSettings.getCategory().getName());
-        if(gameSettings.get_singlePlayer())
+        if(gameSettings.singlePlayer())
             config_single_player.setText(R.string.single_player);
         else
             config_single_player.setText(R.string.multi_player);
@@ -139,7 +137,7 @@ public class SettingsActivity extends Activity {
     }
 
     @OnClick(R.id.button_single_player) void changeSinglePlayer() {
-        gameSettings.set_singlePlayer(!gameSettings.get_singlePlayer());
+        gameSettings.set_singlePlayer(!gameSettings.singlePlayer());
         initializeUI();
     }
 

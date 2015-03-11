@@ -93,12 +93,20 @@ public class Game implements Parcelable, Serializable {
 
     public void initializeMultiplayerSession(boolean guest) {
         int start;
-        if(!guest)
+        int startOther;
+        if(!guest) {
             start = 1;
-        else
+            startOther = 0;
+        }
+        else {
             start = 0;
+            startOther = 1;
+        }
         for(int i = start; i < _screens.size(); i+=2) {
             _screens.get(i).setYourTurn(false);
+        }
+        for(int i = startOther; i < _screens.size(); i+=2) {
+            _screens.get(i).setDeviceName(App.gameHelper.getDeviceName());
         }
     }
 
@@ -142,6 +150,38 @@ public class Game implements Parcelable, Serializable {
         }
     }
 
+
+
+    public String GameToString(Context context) {
+        String body = "";
+        int level = 1;
+        if(App.game.getSettings().singlePlayer())
+            body += context.getString(R.string.game_single_player);
+        else
+            body += context.getString(R.string.game_multi_player);
+        body += "\n";
+        body += "\n";
+        body += "\n";
+        for(Screen s : App.game.getScreens()) {
+            body += context.getString(R.string.level) + " " + level;
+            body += "\n";
+            body += "   " + context.getString(R.string.errors) + " " + s.getErrors();
+            body += "\n";
+            body += "   " + context.getString(R.string.time) + " " + s.getScreenTime();
+            if(!App.game.getSettings().singlePlayer()) {
+                body += "\n";
+                body += "   " + context.getString(R.string.device) + " " + s.getDeviceName();
+            }
+            body += "\n";
+            body += "\n";
+            level++;
+        }
+        body += "\n";
+        body += "\n";
+        body += context.getString(R.string.game_time) + " " + App.game.getGameTime(context);
+        return body;
+    }
+
     //parcelable implementation
 
     public int describeContents() {
@@ -182,7 +222,8 @@ public class Game implements Parcelable, Serializable {
         }
     }
 
-    public JSONObject getJsonObject() throws JSONException {
+
+    /*public JSONObject getJsonObject() throws JSONException {
         JSONObject obj = new JSONObject();
         obj.put("activeScreen", _activeScreen);
         JSONArray arr = new JSONArray();
@@ -191,5 +232,5 @@ public class Game implements Parcelable, Serializable {
         }
         obj.put("settings", _settings.getJsonObject());
         return obj;
-    }
+    }*/
 }

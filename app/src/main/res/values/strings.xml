@@ -11,8 +11,8 @@
     <string name="play_again">Gioca ancora</string>
     <string name="quit">Esci</string>
     <string name="results">Risultati</string>
-    <string name="errors">errori:</string>
-    <string name="time">tempo:</string>
+    <string name="errors">Errori:</string>
+    <string name="time">Tempo:</string>
     <string name="category">Categoria:</string>
     <string name="single_player">Un Giocatore</string>
     <string name="multi_player">Due Giocatori</string>
@@ -34,5 +34,12 @@
     <string name="initializing_game">Inizializzo il gioco...</string>
     <string name="config_device">Configura il tablet</string>
     <string name="settings">Configura</string>
+    <string name="your_tyrn">Tocca a te</string>
+    <string name="opponent_turn">Tocca all\'avevrsario</string>
+    <string name="level">Livello</string>
+    <string name="device">Nome Dispositivo:</string>
+    <string name="game_single_player">Gioco in Single Player</string>
+    <string name="game_multi_player">Gioco in Multiplayer</string>
+
 
 </resources>

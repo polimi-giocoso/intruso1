@@ -42,7 +42,7 @@ public class MultiPlayerDiscoveryActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bluetooth_discovery);
+        setContentView(R.layout.activity_device_discovery);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         initializeUi();
         context = this;
@@ -70,7 +70,7 @@ public class MultiPlayerDiscoveryActivity extends Activity {
     private void initializeUi() {
         ButterKnife.inject(this);
         mArrayAdapter = new ArrayAdapter<Device>(this,
-                android.R.layout.simple_list_item_1,
+                R.layout.list_item_device_discovery, R.id.item_device_device_name,
                 App.gameHelper.getDeviceList());
         devicesListView.setAdapter(mArrayAdapter);
     }

@@ -48,9 +48,7 @@ public class GameHelper {
     private ProgressDialog multiPlayerInitializationWaitDialog;
     private Handler mHandler;
     private AlertDialog.Builder dialog;
-
     private Activity _currentActivity;
-
     private String deviceName;
     private boolean isServer;
 
@@ -254,7 +252,7 @@ public class GameHelper {
     public void startGame() {
         App.game.initialize();
         Intent intent;
-        if(App.game.getSettings().get_singlePlayer())
+        if(App.game.getSettings().singlePlayer())
             intent = new Intent(mContext, ScreenActivity.class);
         else
             intent = new Intent(mContext, MultiPlayerDiscoveryActivity.class);
@@ -263,7 +261,7 @@ public class GameHelper {
 
     public void restartGame() {
         App.game.restart();
-        if(!App.game.getSettings().get_singlePlayer())
+        if(!App.game.getSettings().singlePlayer())
             sendGameInfo();
         else
             startGameSession();
@@ -271,7 +269,7 @@ public class GameHelper {
 
     public void quitGame() {
         App.game.restart();
-        if(!App.game.getSettings().get_singlePlayer()) {
+        if(!App.game.getSettings().singlePlayer()) {
             //mConnection.isConnected = false;
             mConnection.disconnectClient();
         }
@@ -280,7 +278,7 @@ public class GameHelper {
     }
 
     public void nextScreen() {
-        if (!App.game.getSettings().get_singlePlayer()) {
+        if (!App.game.getSettings().singlePlayer()) {
             GameMessage message = new GameMessage(GameMessage.Type.NextScreen);
             DateTime[] times = new DateTime[2];
             times[0] = App.game.getActiveScreen().getStart();

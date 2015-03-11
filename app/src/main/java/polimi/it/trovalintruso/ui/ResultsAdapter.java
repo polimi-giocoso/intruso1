@@ -60,7 +60,7 @@ public class ResultsAdapter extends BaseAdapter {
         }
         Screen s = _game.getScreens().get(position);
         int level = position + 1;
-        holder.title.setText("Livello " + level);
+        holder.title.setText(_context.getString(R.string.level) + " " + level);
         holder.errors.setText("" + s.getErrors());
         PeriodFormatter formatter = new PeriodFormatterBuilder()
                 .appendMinutes()

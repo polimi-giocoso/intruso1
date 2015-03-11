@@ -24,8 +24,17 @@ public class Screen implements Parcelable, Serializable {
     private DateTime _end;
     private int _incorrectAttempts;
     private boolean _yourTurn;
+    private String _deviceName;
 
     //getters & setters
+
+    protected void setDeviceName(String s) {
+        _deviceName = s;
+    }
+
+    public String getDeviceName() {
+        return _deviceName;
+    }
 
     public ArrayList<Element> get_elements() {
         return _elements;
