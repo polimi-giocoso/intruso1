@@ -18,16 +18,25 @@ import polimi.it.trovalintruso.model.Category;
  */
 public class CategoryManager {
 
-    private ArrayList<Category> _categoryList;
+    private ArrayList<Category> _categoryList4;
+    private ArrayList<Category> _categoryList6;
 
     public CategoryManager(Context context) {
-        _categoryList = new ArrayList<Category>();
+        _categoryList4 = new ArrayList<Category>();
+        _categoryList6 = new ArrayList<>();
         try {
-            String categories = readCategoriesFile(context);
+            String categories = readCategories4File(context);
             if(categories != null) {
                 JSONArray arr = new JSONArray(categories);
                 for(int i = 0; i < arr.length(); i++) {
-                    _categoryList.add(new Category(arr.getJSONObject(i)));
+                    _categoryList4.add(new Category(arr.getJSONObject(i)));
+                }
+            }
+            categories = readCategories6File(context);
+            if(categories != null) {
+                JSONArray arr = new JSONArray(categories);
+                for(int i = 0; i < arr.length(); i++) {
+                    _categoryList6.add(new Category(arr.getJSONObject(i)));
                 }
             }
         }
@@ -36,14 +45,36 @@ public class CategoryManager {
         }
     }
 
-    public ArrayList<Category> getCategoryList() {
-        return _categoryList;
+    public ArrayList<Category> getCategoryList4() {
+        return _categoryList4;
     }
 
+    public ArrayList<Category> getCategoryList6() {
+        return _categoryList6;
+    }
 
-    private String readCategoriesFile(Context ctx)
+    private String readCategories4File(Context ctx)
     {
-        InputStream inputStream = ctx.getResources().openRawResource(R.raw.categories);
+        InputStream inputStream = ctx.getResources().openRawResource(R.raw.categories4);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        int i;
+        try {
+            i = inputStream.read();
+            while (i != -1)
+            {
+                byteArrayOutputStream.write(i);
+                i = inputStream.read();
+            }
+            inputStream.close();
+        } catch (IOException e) {
+            return null;
+        }
+        return byteArrayOutputStream.toString();
+    }
+
+    private String readCategories6File(Context ctx)
+    {
+        InputStream inputStream = ctx.getResources().openRawResource(R.raw.categories6);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         int i;
         try {

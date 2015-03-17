@@ -112,15 +112,20 @@ public class Game implements Parcelable, Serializable {
 
     private void fillScreens() {
         Random rand = new Random();
-        if(_settings.getRandomCategory()) {
+        if(_settings.getCategory().getRandom()) {
+            ArrayList<Category> categories;
+            if(_settings.getNumOfObjects() == 4)
+                categories = App.getCategoryManager().getCategoryList4();
+            else
+                categories = App.getCategoryManager().getCategoryList6();
             HashMap<Integer, ArrayList<Integer>> used = new HashMap<Integer, ArrayList<Integer>>();
             for(int i = 0; i < _settings.getNumOfScreens(); i++) {
-                int max1 = App.getCategoryManager().getCategoryList().size() - 1;
-                int min1 = 0;
+                int max1 = categories.size() - 1;
+                int min1 = 1; //at position 0 there is random category
                 int randomCat = rand.nextInt((max1 - min1) + 1) + min1;
                 if(!used.keySet().contains(randomCat))
                     used.put(randomCat, new ArrayList<Integer>());
-                Category category = App.getCategoryManager().getCategoryList().get(randomCat);
+                Category category = categories.get(randomCat);
                 ArrayList<CategoryGroup> groups = category.getGroups();
                 int max = groups.size() - 1;
                 int min = 0;

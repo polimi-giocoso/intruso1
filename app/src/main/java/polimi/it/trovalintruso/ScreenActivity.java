@@ -182,7 +182,7 @@ public class ScreenActivity extends Activity {
                 inGame = false;
             }
             else {
-                ttobj.speak("hai sbagliato", TextToSpeech.QUEUE_FLUSH, null);
+                ttobj.speak("sbagliato", TextToSpeech.QUEUE_FLUSH, null);
                 YoYo.with(Techniques.Shake)
                         .duration(700)
                         .playOn(v);

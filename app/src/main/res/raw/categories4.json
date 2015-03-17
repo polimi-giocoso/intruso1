@@ -1,0 +1,79 @@
+[
+	{
+		"name": "Casuale"
+	},
+	{
+		"name": "Colore",
+		"groups": [
+			{
+				"target": "arancia",
+				"others": [
+					"fragola",
+					"ciliegie",
+					"mela"
+				]
+			},
+			{
+				"target": "nuvola_bianca",
+				"others": [
+					"luna",
+					"stella_gialla",
+					"sole"
+				]
+			},
+			{
+				"target": "uva_bianca",
+				"others": [
+					"melanzana",
+					"prugna",
+					"uva_nera"
+				]
+			}
+		]
+	},
+	{
+		"name": "Forma",
+		"groups": [
+			{
+				"target": "palla_rugby",
+				"others": [
+					"palla_ping_pong",
+					"palla_tennis",
+					"palla_calcio"
+				]
+			},
+			{
+				"target": "uovo",
+				"others": [
+					"libro",
+					"pacco_regalo",
+					"scatola_biscotti"
+				]
+			},
+			{
+				"target": "dado",
+				"others": [
+					"bottone",
+					"disco_vinile",
+					"ruota"
+				]
+			},
+			{
+				"target": "segnale_stradale_cerchio",
+				"others": [
+					"segnale_stradale_triangolo",
+					"segnale_stradale_triangolo2",
+					"segnale_stradale_triangolo3"
+				]
+			},
+			{
+				"target": "libro_chiuso",
+				"others": [
+					"pergamena",
+					"spartito_musicale",
+					"cartina_geografica"
+				]
+			}
+		]
+	}
+]

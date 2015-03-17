@@ -16,12 +16,18 @@ public class Category implements Serializable {
 
     private ArrayList<CategoryGroup> _groups;
     private String _name;
+    private boolean _random;
 
     public String getName() {
         return _name;
     }
 
+    public boolean getRandom(){
+        return _random;
+    }
+
     public Category(JSONObject definition) throws JSONException {
+        _random = false;
         _groups = new ArrayList<CategoryGroup>();
         if(!definition.isNull("name"))
             _name = definition.getString("name");
@@ -32,6 +38,8 @@ public class Category implements Serializable {
                 _groups.add(new CategoryGroup(group));
             }
         }
+        else
+            _random = true;
     }
 
     public ArrayList<CategoryGroup> getGroups() {

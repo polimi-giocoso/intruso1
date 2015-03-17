@@ -1,0 +1,57 @@
+[
+	{
+		"name": "Casuale",
+		"groups": [
+			{
+				"target": "nuvola_bianca",
+				"others": [
+					"limoni",
+					"luna",
+					"pallina_tennis",
+					"sole",
+					"stella_gialla"
+				]
+			},
+			{
+				"target": "dado",
+				"others": [
+					"bottone",
+					"disco_vinile",
+					"macina",
+					"ruota_automobile",
+					"ruota"
+				]
+			},
+			{
+				"target": "lattuga",
+				"others": [
+					"banana",
+					"kiwi",
+					"ciliegie",
+					"arancia",
+					"mela"
+				]
+			},
+			{
+				"target": "pesce_destra",
+				"others": [
+					"pesce_sinistra",
+					"pesce_sinistra",
+					"pesce_sinistra",
+					"pesce_sinistra",
+					"pesce_sinistra"
+				]
+			},
+			{
+				"target": "pesce_sinistra",
+				"others": [
+					"pesce_destra",
+					"pesce_destra",
+					"pesce_destra",
+					"pesce_destra",
+					"pesce_destra"
+				]
+			}
+		]
+	}
+]

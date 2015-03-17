@@ -21,9 +21,11 @@ import polimi.it.trovalintruso.model.Settings;
 
 public class SettingsActivity extends Activity {
 
-    Settings gameSettings;
+    private Settings gameSettings;
     //Game game;
-    ArrayList<Category> categories;
+    private ArrayList<Category> categories4;
+    private ArrayList<Category> categories6;
+    private int categoryIndex = 0;
     Context context;
 
     //@InjectView(R.id.button_start_game)
@@ -101,10 +103,12 @@ public class SettingsActivity extends Activity {
     }
 
     private void initializeGame() {
+        categories4 = App.getCategoryManager().getCategoryList4();
+        categories6 = App.getCategoryManager().getCategoryList6();
         try {
             gameSettings = new Settings(context);
             gameSettings.set_singlePlayer(true);
-            gameSettings.setCategory(App.getCategoryManager().getCategoryList().get(0));
+            gameSettings.setCategory(categories4.get(0));
             gameSettings.setNumOfObjects(4);
             gameSettings.setNumOfScreens(1);
             //gameSettings.setTimeLimitEnabled(false);
@@ -117,23 +121,73 @@ public class SettingsActivity extends Activity {
 
     @OnClick(R.id.button_num_obj_each_screen) void changeNumOfObjects() {
         int actual = gameSettings.getNumOfObjects();
-        if(actual == 4)
+        if(actual == 4) {
             actual = 6;
-        else
+            categoryIndex = 0;
+            gameSettings.setCategory(categories6.get(categoryIndex));
+        }
+        else {
             actual = 4;
+            categoryIndex = 0;
+            gameSettings.setCategory(categories4.get(categoryIndex));
+        }
         gameSettings.setNumOfObjects(actual);
+        checkNumOfScreens(false);
         initializeUI();
     }
 
     @OnClick(R.id.button_num_of_screens) void changeNumOfScreens() {
-        int actual = gameSettings.getNumOfScreens();
+        /*int actual = gameSettings.getNumOfScreens();
         int max = gameSettings.getCategory().getGroups().size();
         if(actual < max)
             actual++;
         else
             actual = 1;
-        gameSettings.setNumOfScreens(actual);
+        gameSettings.setNumOfScreens(actual);*/
+        checkNumOfScreens(true);
         initializeUI();
+    }
+
+    @OnClick(R.id.button_config_category) void changeCategory() {
+        int numOfObjects = gameSettings.getNumOfObjects();
+        if(numOfObjects == 4) {
+            if(categoryIndex < categories4.size() - 1)
+                categoryIndex ++;
+            else
+                categoryIndex = 0;
+            gameSettings.setCategory(categories4.get(categoryIndex));
+        }
+        else {
+            if(categoryIndex < categories6.size() - 1)
+                categoryIndex ++;
+            else
+                categoryIndex = 0;
+            gameSettings.setCategory(categories6.get(categoryIndex));
+        }
+        checkNumOfScreens(false);
+        initializeUI();
+    }
+
+    private void checkNumOfScreens(boolean increment) {
+        int max = 0;
+        if(gameSettings.getCategory().getRandom()) {
+            if(gameSettings.getNumOfObjects() == 4)
+                for(Category c : App.getCategoryManager().getCategoryList4())
+                    max += c.getGroups().size();
+            else
+                for(Category c : App.getCategoryManager().getCategoryList6())
+                    max += c.getGroups().size();
+        }
+        else
+            max = gameSettings.getCategory().getGroups().size();
+        int actual = gameSettings.getNumOfScreens();
+        if(actual < max) {
+            if (increment)
+                actual++;
+        }
+        else
+            actual = 1;
+        gameSettings.setNumOfScreens(actual);
     }
 
     @OnClick(R.id.button_single_player) void changeSinglePlayer() {
