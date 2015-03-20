@@ -32,7 +32,6 @@
     <string name="wait">Attendi</string>
     <string name="inviting_player">Sto invitando il giocatore...</string>
     <string name="initializing_game">Inizializzo il gioco...</string>
-    <string name="config_device">Configura il tablet</string>
     <string name="settings">Configura</string>
     <string name="your_tyrn">Tocca a te</string>
     <string name="opponent_turn">Tocca all\'avevrsario</string>
@@ -40,6 +39,7 @@
     <string name="device">Nome Dispositivo:</string>
     <string name="game_single_player">Gioco in Single Player</string>
     <string name="game_multi_player">Gioco in Multiplayer</string>
+    <string name="config_device">Configura il dispositivo</string>
 
 
 </resources>

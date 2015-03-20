@@ -1,16 +1,21 @@
 package polimi.it.trovalintruso.model;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
+
+import polimi.it.trovalintruso.R;
 
 /**
  * Created by poool on 09/02/15.
@@ -120,6 +125,17 @@ public class Screen implements Parcelable, Serializable {
 
     public Interval getScreenTime() {
         return new Interval(_start.getMillis(), _end.getMillis());
+    }
+
+    public String getParsedScreenTime(Context context) {
+        PeriodFormatter formatter = new PeriodFormatterBuilder()
+                .appendMinutes()
+                .appendSuffix(" " + context.getString(R.string.minute), " " +  context.getString(R.string.minutes))
+                .appendSeparator(" " + context.getString(R.string.and) + " ")
+                .appendSeconds()
+                .appendSuffix(" " + context.getString(R.string.second), " " + context.getString(R.string.seconds))
+                .toFormatter();
+        return formatter.print(getScreenTime().toPeriod());
     }
 
     //parcelable implementation

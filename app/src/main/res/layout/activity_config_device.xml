@@ -8,7 +8,9 @@
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true">
 
         <ImageView
             android:id="@+id/logo"
@@ -19,7 +21,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:layout_gravity="center"
@@ -33,10 +36,39 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email"/>
+                android:text="Account Email"/>
 
             <EditText
-                android:text="Inserisci e-mail"
+                android:hint="Inserisci e-mail dispositivo"
+                android:textStyle="bold"
+                android:textSize="@dimen/abc_text_size_title_material"
+                android:layout_width="400dip"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60dip"
+                android:id="@+id/account_email_edit_text"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password"/>
+
+            <EditText
+                android:hint="Inserisci password"
+                android:textStyle="bold"
+                android:password="true"
+                android:textSize="@dimen/abc_text_size_title_material"
+                android:layout_width="400dip"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="60dip"
+                android:id="@+id/account_password_edit_text"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email a cui inviare i dati"/>
+
+            <EditText
+                android:hint="Inserisci e-mail a cui inviare i dati"
                 android:textStyle="bold"
                 android:textSize="@dimen/abc_text_size_title_material"
                 android:layout_width="400dip"
@@ -50,7 +82,7 @@
                 android:text="Nome dispositivo"/>
 
             <EditText
-                android:text="Inserisci nome dispositivo"
+                android:hint="Inserisci nome dispositivo"
                 android:textStyle="bold"
                 android:textSize="@dimen/abc_text_size_title_material"
                 android:layout_width="400dip"

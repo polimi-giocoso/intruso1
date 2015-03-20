@@ -2,6 +2,7 @@ package polimi.it.trovalintruso;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Button;
@@ -125,4 +126,8 @@ public class SettingsActivity extends Activity {
         App.gameSettings.setNumOfScreens(actual);
     }
 
+    @OnClick(R.id.button_config_device) void openConfigActivity() {
+        Intent i = new Intent(context, ConfigDeviceActivity.class);
+        startActivity(i);
+    }
 }

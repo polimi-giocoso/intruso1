@@ -35,7 +35,7 @@ public class Settings implements Parcelable, Serializable {
     private Category _category;
     private Boolean _singlePlayer;
 
-    public Settings(Context context) throws JSONException {
+    public Settings(Context context) {
         _numOfObjects = 4;
         _numOfScreens = 2;
         _randomCategory = false;

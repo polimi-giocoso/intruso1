@@ -2,9 +2,11 @@ package polimi.it.trovalintruso;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import polimi.it.trovalintruso.multiplayer.EmailHelper;
 import polimi.it.trovalintruso.ui.ResultsAdapter;
 
 
@@ -41,8 +44,9 @@ public class ResultsActivity extends Activity {
         context = this;
         initializeUi();
         App.gameHelper.registerCurrentActivity(this);
-        if(!App.gameHelper.isServer() && !App.game.getSettings().singlePlayer())
-            new MailTask().execute();
+        if(App.gameHelper.isServer() || App.game.getSettings().singlePlayer())
+            //new MailTask().execute();
+            sendMail();
     }
 
     @Override
@@ -75,21 +79,32 @@ public class ResultsActivity extends Activity {
         App.gameHelper.restartGame();
     }
 
-    private class MailTask extends AsyncTask<Void, Void, Void> {
+    private void sendMail() {
+        try {
+            SharedPreferences sharedPrefs = context.getApplicationContext()
+                    .getSharedPreferences("settings", Context.MODE_PRIVATE);
+            String email = sharedPrefs.getString("account_email", null);
+            String password = sharedPrefs.getString("account_password", null);
+            String to = sharedPrefs.getString("email", null);
+            if(email != null && password != null && to != null) {
+                EmailHelper sender = new EmailHelper(email, password, context);
+                sender.sendMail("Tova Intruso 1 - Risultato",
+                        App.game.GameToString(context),
+                        email,
+                        to);
+            }
+        } catch (Exception e) {
+            Log.e("SendMail", e.getMessage(), e);
+        }
+    }
+
+    /*private class MailTask extends AsyncTask<Void, Void, Void> {
 
 
         @Override
         protected Void doInBackground(Void... params) {
-            /*try {
-                EmailHelper sender = new EmailHelper("username@gmail.com", "password");
-                sender.sendMail("This is Subject",
-                        "This is Body",
-                        "user@gmail.com",
-                        "user@yahoo.com");
-            } catch (Exception e) {
-                Log.e("SendMail", e.getMessage(), e);
-            }*/
+
             return null;
         }
-    }
+    }*/
 }

@@ -1,6 +1,9 @@
 package polimi.it.trovalintruso.multiplayer;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -59,7 +62,7 @@ public class EmailHelper extends javax.mail.Authenticator {
     }
 
     public synchronized void sendMail(String subject, String body, String sender, String recipients) throws Exception {
-        try{
+        //try{
             MimeMessage message = new MimeMessage(session);
             DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain"));
             message.setSender(new InternetAddress(sender));
@@ -69,10 +72,11 @@ public class EmailHelper extends javax.mail.Authenticator {
                 message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients));
             else
                 message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
-            Transport.send(message);
-        }catch(Exception e){
-
-        }
+        new SendEmailAsyncTask(message).execute();
+            //Transport.send(message);
+        /*}catch(Exception e){
+            e.printStackTrace();
+        }*/
     }
 
     public class ByteArrayDataSource implements DataSource {
@@ -111,6 +115,34 @@ public class EmailHelper extends javax.mail.Authenticator {
 
         public OutputStream getOutputStream() throws IOException {
             throw new IOException("Not Supported");
+        }
+    }
+
+
+    class SendEmailAsyncTask extends AsyncTask<Void, Void, Boolean> {
+
+        MimeMessage message;
+
+        public SendEmailAsyncTask(MimeMessage m) {
+            message = m;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                Transport.send(message);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if(!aBoolean)
+                Toast.makeText(_context, "Invio dei risultati non riuscito", Toast.LENGTH_LONG).show();
         }
     }
 }

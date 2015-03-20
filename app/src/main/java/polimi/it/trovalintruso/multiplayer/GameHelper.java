@@ -32,6 +32,7 @@ import polimi.it.trovalintruso.ScreenActivity;
 import polimi.it.trovalintruso.model.Device;
 import polimi.it.trovalintruso.model.Game;
 import polimi.it.trovalintruso.model.GameMessage;
+import polimi.it.trovalintruso.model.Settings;
 import polimi.it.trovalintruso.multiplayer.network.Base64Coder;
 import polimi.it.trovalintruso.multiplayer.network.ConnectionHelper;
 import polimi.it.trovalintruso.network.MultiPlayerDiscoveryActivity;
@@ -89,6 +90,17 @@ public class GameHelper {
     public void onMainActivityCreate() {
         init();
         multiPlayerServiceHelper.discoverServices();
+        SharedPreferences sharedPref = mContext.getApplicationContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        String s = sharedPref.getString("game_settings", null);
+        if(s != null) {
+            try {
+                App.gameSettings = (Settings) fromString(s);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void onMainActivityDestroy() {
@@ -198,7 +210,9 @@ public class GameHelper {
 
             if(message.type == GameMessage.Type.SendGame) {
                 //try {
-                    App.game = (Game) message.msg; //fromString(message.msg);
+                    Game g = (Game) message.msg; //fromString(message.msg);
+                    App.game = g;
+                    App.game.restart();
                     App.game.initializeMultiplayerSession(true);
                     GameMessage ack = new GameMessage(GameMessage.Type.SendGameAck);
                     mConnection.sendMessage(ack);
@@ -251,6 +265,16 @@ public class GameHelper {
 
     public void startGame() {
         App.game.initialize();
+        try {
+            String s = toString(App.gameSettings);
+            if(s != null) {
+                SharedPreferences sharedPref = mContext.getApplicationContext()
+                        .getSharedPreferences("settings", Context.MODE_PRIVATE);
+                sharedPref.edit().putString("game_settings", s).commit();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Intent intent;
         if(App.game.getSettings().singlePlayer())
             intent = new Intent(mContext, ScreenActivity.class);

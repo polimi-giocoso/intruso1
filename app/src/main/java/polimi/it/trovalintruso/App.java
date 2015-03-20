@@ -18,7 +18,7 @@ public class App extends Application {
 
     public static Game game;
 
-    public static Settings gameSettings;
+    public static Settings gameSettings = null;
 
     private static CategoryManager _categoryManager;
 

@@ -158,6 +158,7 @@ public class Game implements Parcelable, Serializable {
 
 
     public String GameToString(Context context) {
+        //holder.time.setText("" + formatter.print(s.getScreenTime().toPeriod()));
         String body = "";
         int level = 1;
         if(App.game.getSettings().singlePlayer())
@@ -172,7 +173,7 @@ public class Game implements Parcelable, Serializable {
             body += "\n";
             body += "   " + context.getString(R.string.errors) + " " + s.getErrors();
             body += "\n";
-            body += "   " + context.getString(R.string.time) + " " + s.getScreenTime();
+            body += "   " + context.getString(R.string.time) + " " + s.getParsedScreenTime(context);
             if(!App.game.getSettings().singlePlayer()) {
                 body += "\n";
                 body += "   " + context.getString(R.string.device) + " " + s.getDeviceName();

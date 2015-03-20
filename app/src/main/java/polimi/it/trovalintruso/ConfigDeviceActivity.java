@@ -36,6 +36,12 @@ public class ConfigDeviceActivity extends Activity {
     @InjectView(R.id.name_edit_text)
     EditText name_edit;
 
+    @InjectView(R.id.account_email_edit_text)
+    EditText account_email_edit;
+
+    @InjectView(R.id.account_password_edit_text)
+    EditText account_password_edit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,8 @@ public class ConfigDeviceActivity extends Activity {
         sharedPref = getApplicationContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
         email_edit.setText(sharedPref.getString("email", ""));
         name_edit.setText(sharedPref.getString("dev_name", ""));
+        account_email_edit.setText(sharedPref.getString("account_email", ""));
+        account_password_edit.setText(sharedPref.getString("account_password", ""));
     }
 
 
@@ -61,10 +69,8 @@ public class ConfigDeviceActivity extends Activity {
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("email", s);
             editor.commit();
-            //email_edit.setBackgroundColor(getResources().getColor(R.color.Transparent));
         }
         else {
-            //email_edit.setBackgroundColor(getResources().getColor(R.color.Red));
         }
     }
 
@@ -79,10 +85,20 @@ public class ConfigDeviceActivity extends Activity {
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("dev_name", s);
             editor.commit();
-            //email_edit.setBackgroundColor(getResources().getColor(R.color.Transparent));
         }
         else {
-            //name_edit.setBackgroundColor(getResources().getColor(R.color.Red));
         }
+    }
+
+    @OnTextChanged(R.id.account_password_edit_text) void passwordChanged(CharSequence s, int start, int before, int count) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("account_password", s.toString());
+        editor.commit();
+    }
+
+    @OnTextChanged(R.id.account_email_edit_text) void accountChanged(CharSequence s, int start, int before, int count) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("account_email", s.toString());
+        editor.commit();
     }
 }
