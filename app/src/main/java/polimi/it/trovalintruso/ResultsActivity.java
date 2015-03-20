@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -58,8 +59,8 @@ public class ResultsActivity extends Activity {
     private void initializeUi() {
         ButterKnife.inject(this);
         if(!App.gameHelper.isServer() && !App.game.getSettings().singlePlayer()) {
-            restart_game.setEnabled(false);
-            quit_game.setEnabled(false);
+            restart_game.setVisibility(View.INVISIBLE);
+            quit_game.setVisibility(View.INVISIBLE);
         }
         adapter = new ResultsAdapter(App.game, context);
         list.setAdapter(adapter);

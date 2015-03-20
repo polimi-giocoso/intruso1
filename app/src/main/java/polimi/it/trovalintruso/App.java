@@ -4,6 +4,7 @@ import android.app.Application;
 
 import polimi.it.trovalintruso.helpers.CategoryManager;
 import polimi.it.trovalintruso.model.Game;
+import polimi.it.trovalintruso.model.Settings;
 import polimi.it.trovalintruso.multiplayer.GameHelper;
 
 /**
@@ -16,6 +17,8 @@ public class App extends Application {
     public static GameHelper gameHelper;
 
     public static Game game;
+
+    public static Settings gameSettings;
 
     private static CategoryManager _categoryManager;
 

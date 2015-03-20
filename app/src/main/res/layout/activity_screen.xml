@@ -5,11 +5,20 @@
     tools:context="polimi.it.trovalintruso.ScreenActivity"
     android:background="@color/background_color">
 
-    <ImageView
-        android:id="@+id/logo"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo"/>
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/logo"/>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,13 +53,21 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/next_screen_button"
-        android:text="next level"
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="80dip"
-        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:id="@+id/next_screen_layout"
+        android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:enabled="false"/>
+        android:layout_marginRight="50dip">
+
+        <ImageView
+            android:id="@+id/next_screen_button"
+            android:text="next level"
+            android:layout_width="wrap_content"
+            android:layout_height="80dip"
+            android:src="@drawable/logo"/>
+
+    </FrameLayout>
 
 </RelativeLayout>

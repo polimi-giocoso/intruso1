@@ -25,10 +25,10 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 import polimi.it.trovalintruso.App;
+import polimi.it.trovalintruso.MainActivity;
 import polimi.it.trovalintruso.R;
 import polimi.it.trovalintruso.ResultsActivity;
 import polimi.it.trovalintruso.ScreenActivity;
-import polimi.it.trovalintruso.SettingsActivity;
 import polimi.it.trovalintruso.model.Device;
 import polimi.it.trovalintruso.model.Game;
 import polimi.it.trovalintruso.model.GameMessage;
@@ -169,7 +169,7 @@ public class GameHelper {
                     dialog.setIcon(android.R.drawable.ic_dialog_alert);
                     dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(mContext, SettingsActivity.class);
+                            Intent intent = new Intent(mContext, MainActivity.class);
                             App.game.restart();
                             mContext.startActivity(intent);
                         }
@@ -177,7 +177,7 @@ public class GameHelper {
                     dialog.show();
                 }
                 else if(_currentActivity instanceof ResultsActivity) {
-                    Intent intent = new Intent(mContext, SettingsActivity.class);
+                    Intent intent = new Intent(mContext, MainActivity.class);
                     String pkg = mContext.getPackageName();
                     App.game.restart();
                     mContext.startActivity(intent);
@@ -273,7 +273,7 @@ public class GameHelper {
             //mConnection.isConnected = false;
             mConnection.disconnectClient();
         }
-        Intent intent = new Intent(mContext, SettingsActivity.class);
+        Intent intent = new Intent(mContext, MainActivity.class);
         mContext.startActivity(intent);
     }
 

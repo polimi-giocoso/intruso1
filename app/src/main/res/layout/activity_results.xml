@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,49 +6,71 @@
     android:orientation="vertical"
     android:background="@color/background_color">
 
-    <TextView
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        style="@android:style/TextAppearance.Large"
-        android:text="@string/results"/>
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true">
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/results_list_view"
-        android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="3"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textSize="@dimen/abc_text_size_headline_material"
-        android:id="@+id/total_game_time"/>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="3"
-        android:gravity="center">
+        android:orientation="vertical"
+        android:layout_marginTop="60dip">
 
-        <Button
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/button_restart_game"
-            android:text="@string/play_again"
-            android:layout_marginRight="10dip"/>
+            android:layout_gravity="center_horizontal"
+            style="@android:style/TextAppearance.Large"
+            android:text="@string/results"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_quit_game"
-            android:text="@string/quit"
-            android:layout_marginLeft="10dip"/>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/results_list_view"
+            android:layout_weight="2"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textSize="@dimen/abc_text_size_headline_material"
+            android:id="@+id/total_game_time"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="4"
+            android:gravity="center">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_restart_game"
+                android:text="@string/play_again"
+                android:layout_marginRight="10dip"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/button_quit_game"
+                android:text="@string/quit"
+                android:layout_marginLeft="10dip"/>
 
         </LinearLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

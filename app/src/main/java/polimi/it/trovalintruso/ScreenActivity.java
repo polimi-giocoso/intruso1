@@ -2,7 +2,6 @@ package polimi.it.trovalintruso;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.speech.tts.TextToSpeech;
 import android.os.Bundle;
@@ -45,7 +44,7 @@ public class ScreenActivity extends Activity {
     LinearLayout layout2;
 
     @InjectView(R.id.next_screen_button)
-    Button next_screen_button;
+    ImageView next_screen_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,10 +93,11 @@ public class ScreenActivity extends Activity {
 
     private void initializeUI() {
         ButterKnife.inject(this);
-        if(App.game.isLastScreen())
+        next_screen_button.setVisibility(View.INVISIBLE);
+        /*if(App.game.isLastScreen())
             next_screen_button.setText(string.end_game);
         else
-            next_screen_button.setText(string.next_level);
+            next_screen_button.setText(string.next_level);*/
     }
 
     private void gameScreenInitialization() {
@@ -177,8 +177,12 @@ public class ScreenActivity extends Activity {
                 YoYo.with(Techniques.Bounce)
                         .duration(700)
                         .playOn(v);
-                if(yourTurn)
-                    next_screen_button.setEnabled(true);
+                if(yourTurn) {
+                    next_screen_button.setVisibility(View.VISIBLE);
+                    YoYo.with(Techniques.BounceIn)
+                            .duration(700)
+                            .playOn(next_screen_button);
+                }
                 inGame = false;
             }
             else {
