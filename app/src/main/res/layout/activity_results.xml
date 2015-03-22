@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="polimi.it.trovalintruso.ResultsActivity"
     android:orientation="vertical"
-    android:background="@color/background_color">
+    android:background="@drawable/sfondo_arancio">
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -16,7 +16,9 @@
             android:id="@+id/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/logo"/>
+            android:layout_marginRight="30dip"
+            android:layout_marginTop="20dip"
+            android:src="@drawable/logo_intruso"/>
 
     </FrameLayout>
 
@@ -53,20 +55,21 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:layout_weight="4"
-            android:gravity="center">
+            android:gravity="center"
+            android:layout_marginBottom="30dip">
 
-            <Button
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/button_restart_game"
-                android:text="@string/play_again"
+                android:src="@drawable/tasto_rigioca"
                 android:layout_marginRight="10dip"/>
 
-            <Button
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/button_quit_game"
-                android:text="@string/quit"
+                android:src="@drawable/tasto_esci"
                 android:layout_marginLeft="10dip"/>
 
         </LinearLayout>

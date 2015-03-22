@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,10 +30,10 @@ public class ResultsActivity extends Activity {
     ListView list;
 
     @InjectView(R.id.button_restart_game)
-    Button restart_game;
+    ImageView restart_game;
 
     @InjectView(R.id.button_quit_game)
-    Button quit_game;
+    ImageView quit_game;
 
     @InjectView(R.id.total_game_time)
     TextView total_game_time;
