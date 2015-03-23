@@ -28,44 +28,40 @@
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="40dip"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TROVA L\'INTRUSO"
             android:layout_centerHorizontal="true"
-            android:textSize="70sp"
-            android:textStyle="bold"
             android:id="@+id/main_title"
-            android:layout_marginTop="30dip"
+            android:src="@drawable/title"
             />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/main_title"
-            android:layout_marginTop="30dip">
+            android:layout_below="@id/main_title">
 
             <ImageView
                 android:id="@+id/image_single_player"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/tasto_singolo"
-                android:layout_marginRight="60dip"/>
+                android:layout_marginRight="20dip"/>
 
             <ImageView
                 android:id="@+id/image_multi_player"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/tasto_multi"
-                android:layout_marginLeft="60dip"/>
+                android:layout_marginLeft="20dip"/>
         </LinearLayout>
 
     </LinearLayout>

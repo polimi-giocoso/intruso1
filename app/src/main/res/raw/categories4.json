@@ -8,7 +8,7 @@
 			{
 				"target": "arancia",
 				"others": [
-					"fragola",
+					"fragole_2",
 					"ciliegie",
 					"mela"
 				]
@@ -72,6 +72,96 @@
 					"pergamena",
 					"spartito_musicale",
 					"cartina_geografica"
+				]
+			}
+		]
+	},
+	{
+		"name": "Famiglia semantica",
+		"groups": [
+			{
+				"target": "bambino_triste",
+				"others": [
+					"bambino_felice",
+					"bambina_felice",
+					"adulto_felice"
+				]
+			},
+			{
+				"target": "guanti",
+				"others": [
+					"infradito",
+					"scarpe_tacco",
+					"stivali_pioggia"
+				]
+			},
+			{
+				"target": "lattuga",
+				"others": [
+					"banana",
+					"mandarino",
+					"mela"
+				]
+			},
+			{
+				"target": "spaghetti",
+				"others": [
+					"torta",
+					"budino",
+					"gelato"
+				]
+			},
+			{
+				"target": "smiley_arrabbiato",
+				"others": [
+					"smiley_felice",
+					"smiley_euforico",
+					"smiley_sorridente"
+				]
+			}
+		]
+	},
+	{
+		"name": "Numerosità",
+		"groups": [
+			{
+				"target": "palla_calcio",
+				"others": [
+					"ciliegie",
+					"stelline_2",
+					"bambole_2"
+				]
+			},
+			{
+				"target": "stelline_3",
+				"others": [
+					"palline_da_tennis_4",
+					"caramelle_4",
+					"smiley_4"
+				]
+			},
+			{
+				"target": "mele_3",
+				"others": [
+					"banana",
+					"fragola",
+					"carota"
+				]
+			},
+			{
+				"target": "quadrato",
+				"others": [
+					"cerchi_3",
+					"rettangoli_3",
+					"trangoli_3"
+				]
+			},
+			{
+				"target": "palline_tennis_4",
+				"others": [
+					"caramelle_3",
+					"smiley_3",
+					"stelline_3"
 				]
 			}
 		]
