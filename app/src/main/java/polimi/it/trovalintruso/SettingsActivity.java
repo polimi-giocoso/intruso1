@@ -46,6 +46,10 @@ public class SettingsActivity extends Activity {
         categories6 = App.getCategoryManager().getCategoryList6();
         initializeUI();
         App.gameHelper.registerCurrentActivity(this);
+        if(App.game.getSettings().getNumOfObjects() == 4)
+            categoryIndex = categories4.indexOf(App.game.getSettings().getCategory());
+        else
+            categoryIndex = categories6.indexOf(App.game.getSettings().getCategory());
     }
 
     private void initializeUI() {
@@ -88,7 +92,7 @@ public class SettingsActivity extends Activity {
         int numOfObjects = App.gameSettings.getNumOfObjects();
         if(numOfObjects == 4) {
             if(categoryIndex < categories4.size() - 1)
-                categoryIndex ++;
+                categoryIndex++;
             else
                 categoryIndex = 0;
             App.gameSettings.setCategory(categories4.get(categoryIndex));

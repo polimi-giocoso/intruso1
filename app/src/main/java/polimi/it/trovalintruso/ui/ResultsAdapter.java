@@ -69,7 +69,8 @@ public class ResultsAdapter extends BaseAdapter {
                 .appendSeconds()
                 .appendSuffix(" " + _context.getString(R.string.second), " " + _context.getString(R.string.seconds))
                 .toFormatter();*/
-        holder.time.setText("" + s.getParsedScreenTime(_context));
+        String time = s.getParsedScreenTime(_context);
+        holder.time.setText(time);
 
         return view;
     }

@@ -165,5 +165,111 @@
 				]
 			}
 		]
+	},
+	{
+		"name": "Percettivo",
+		"groups": [
+			{
+				"target": "quadrato_a_pois",
+				"others": [
+					"cerchio_a_righe",
+					"rettangolo_a_righe",
+					"quadrato_a_righe"
+				]
+			},
+			{
+				"target": "a_lettera",
+				"others": [
+					"sette",
+					"due",
+					"quattro"
+				]
+			},
+			{
+				"target": "m_lettera",
+				"others": [
+					"cancelletto",
+					"piu",
+					"piu_2"
+				]
+			},
+			{
+				"target": "s_lettera",
+				"others": [
+					"sei",
+					"nove",
+					"otto"
+				]
+			},
+			{
+				"target": "c_lettera_verde",
+				"others": [
+					"cinque_viola",
+					"nove_giallo",
+					"tre_rosso"
+				]
+			},
+			{
+				"target": "e_lettera",
+				"others": [
+					"rombo",
+					"cancelletto",
+					"punto_esclamativo"
+				]
+			}
+		]
+	},
+	{
+		"name": "Orientamento nello spazio",
+		"groups": [
+			{
+				"target": "mela_foglia_a_destra",
+				"others": [
+					"mela_foglia_a_sinistra_1",
+					"mela_foglia_a_sinistra_2",
+					"mela_foglia_a_sinistra_3"
+				]
+			},
+			{
+				"target": "pallino_nel_cerchio",
+				"others": [
+					"pallino_fuori_dal_triangolo",
+					"pallino_fuori_dal_quadrato",
+					"pallino_fuori_dal_cerchio"
+				]
+			},
+			{
+				"target": "freccia_in_giu",
+				"others": [
+					"freccia_in_su",
+					"freccia_in_su",
+					"freccia_in_su"
+				]
+			},
+			{
+				"target": "freccia_in_su",
+				"others": [
+					"freccia_in_giu",
+					"freccia_in_giu",
+					"freccia_in_giu"
+				]
+			},
+			{
+				"target": "pesce_orientato_a_destra",
+				"others": [
+					"pesce_orientato_a_sinistra",
+					"pesce_orientato_a_sinistra",
+					"pesce_orientato_a_sinistra"
+				]
+			},
+			{
+				"target": "pesce_orientato_a_sinistra",
+				"others": [
+					"pesce_orientato_a_destra",
+					"pesce_orientato_a_destra",
+					"pesce_orientato_a_destra"
+				]
+			}
+		]
 	}
 ]

@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
+import org.joda.time.Period;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
@@ -128,14 +129,21 @@ public class Screen implements Parcelable, Serializable {
     }
 
     public String getParsedScreenTime(Context context) {
-        PeriodFormatter formatter = new PeriodFormatterBuilder()
-                .appendMinutes()
-                .appendSuffix(" " + context.getString(R.string.minute), " " +  context.getString(R.string.minutes))
-                .appendSeparator(" " + context.getString(R.string.and) + " ")
-                .appendSeconds()
-                .appendSuffix(" " + context.getString(R.string.second), " " + context.getString(R.string.seconds))
-                .toFormatter();
-        return formatter.print(getScreenTime().toPeriod());
+        Period p = getScreenTime().toPeriod();
+        int s = p.getSeconds();
+        int m = p.getMinutes();
+        if(m == 0 && s == 0)
+            return "< 1 " + context.getString(R.string.second);
+        else {
+            PeriodFormatter formatter = new PeriodFormatterBuilder()
+                    .appendMinutes()
+                    .appendSuffix(" " + context.getString(R.string.minute), " " + context.getString(R.string.minutes))
+                    .appendSeparator(" " + context.getString(R.string.and) + " ")
+                    .appendSeconds()
+                    .appendSuffix(" " + context.getString(R.string.second), " " + context.getString(R.string.seconds))
+                    .toFormatter();
+            return formatter.print(p);
+        }
     }
 
     //parcelable implementation
