@@ -133,16 +133,18 @@ public class MultiPlayerServiceHelper {
             }
             mService = serviceInfo;
             String[] names = serviceInfo.getServiceName().split("@");
-            Device dev = new Device(serviceInfo, names[1]);
-            Boolean found = false;
-            for(Device d : mDeviceList) {
-                if(d.equals(dev))
-                    found = true;
+            if(names.length > 1) {
+                Device dev = new Device(serviceInfo, names[1]);
+                Boolean found = false;
+                for (Device d : mDeviceList) {
+                    if (d.equals(dev))
+                        found = true;
+                }
+                if (!found)
+                    mDeviceList.add(dev);
+                if (mUpdateHandler != null)
+                    mUpdateHandler.sendMessage(new Message());
             }
-            if(!found)
-                mDeviceList.add(dev);
-            if(mUpdateHandler != null)
-                mUpdateHandler.sendMessage(new Message());
         }
     }
 

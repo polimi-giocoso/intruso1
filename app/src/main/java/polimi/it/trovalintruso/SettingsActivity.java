@@ -46,10 +46,10 @@ public class SettingsActivity extends Activity {
         categories6 = App.getCategoryManager().getCategoryList6();
         initializeUI();
         App.gameHelper.registerCurrentActivity(this);
-        if(App.game.getSettings().getNumOfObjects() == 4)
-            categoryIndex = categories4.indexOf(App.game.getSettings().getCategory());
+        if(App.gameSettings.getNumOfObjects() == 4)
+            categoryIndex = categories4.indexOf(App.gameSettings.getCategory());
         else
-            categoryIndex = categories6.indexOf(App.game.getSettings().getCategory());
+            categoryIndex = categories6.indexOf(App.gameSettings.getCategory());
     }
 
     private void initializeUI() {

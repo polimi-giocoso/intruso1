@@ -109,6 +109,11 @@ public class GameHelper {
         mConnection.tearDown();
     }
 
+    public void restartDiscovery() {
+        App.gameHelper.onMainActivityDestroy();
+        App.gameHelper.onMainActivityCreate();
+    }
+
     public void onAppTerminate() {
     }
 

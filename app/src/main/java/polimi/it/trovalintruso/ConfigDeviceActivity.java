@@ -56,6 +56,11 @@ public class ConfigDeviceActivity extends Activity {
         account_password_edit.setText(sharedPref.getString("account_password", ""));
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        App.gameHelper.restartDiscovery();
+    }
 
     @OnTextChanged(R.id.email_edit_text)
     void EmailChanged(CharSequence s, int start, int before, int count) {
@@ -64,10 +69,10 @@ public class ConfigDeviceActivity extends Activity {
     }
 
     private void checkEmail(String s) {
-        email_matcher = email_pattern.matcher(s);
+        email_matcher = email_pattern.matcher(s.trim());
         if(email_matcher.matches()) {
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("email", s);
+            editor.putString("email", s.trim());
             editor.commit();
         }
         else {
