@@ -45,4 +45,14 @@ public class Category implements Serializable {
     public ArrayList<CategoryGroup> getGroups() {
         return _groups;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Category) {
+            return ((Category)o).getName().compareTo(_name) == 0;
+        }
+        else
+            return false;
+    }
 }

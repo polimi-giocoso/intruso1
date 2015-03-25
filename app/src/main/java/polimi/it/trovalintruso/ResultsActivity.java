@@ -88,7 +88,7 @@ public class ResultsActivity extends Activity {
             String email = sharedPrefs.getString("account_email", null);
             String password = sharedPrefs.getString("account_password", null);
             String to = sharedPrefs.getString("email", null);
-            if(email != null && password != null && to != null) {
+            if(email != null && !email.isEmpty() && password != null && !password.isEmpty() && to != null && !to.isEmpty()) {
                 EmailHelper sender = new EmailHelper(email, password, context);
                 sender.sendMail("Tova Intruso 1 - Risultato",
                         App.game.GameToString(context),

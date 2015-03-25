@@ -2,8 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="polimi.it.trovalintruso.MainActivity"
-    android:id="@+id/main_area"
     android:background="@drawable/sfondo_arancio">
 
     <FrameLayout
@@ -23,17 +21,15 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_gravity="center"
-            android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="250dip"
-            android:paddingRight="50dip">
+            android:paddingRight="50dip"
+            android:layout_marginTop="40dip">
 
             <TextView
                 android:layout_width="wrap_content"
