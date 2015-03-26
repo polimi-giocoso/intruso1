@@ -71,4 +71,38 @@
 
     </FrameLayout>
 
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dip">
+
+        <ImageView
+            android:id="@+id/turno_giocatore"
+            android:visibility="invisible"
+            android:text="next level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/turno_giocatore"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dip">
+
+        <ImageView
+            android:id="@+id/turno_avversario"
+            android:visibility="invisible"
+            android:text="next level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/turno_avversario"/>
+
+    </FrameLayout>
+
 </RelativeLayout>

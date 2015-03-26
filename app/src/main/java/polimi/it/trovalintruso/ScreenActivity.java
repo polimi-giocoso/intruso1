@@ -46,6 +46,12 @@ public class ScreenActivity extends Activity {
     @InjectView(R.id.next_screen_button)
     ImageView next_screen_button;
 
+    @InjectView(R.id.turno_giocatore)
+    ImageView turno_giocatore;
+
+    @InjectView(R.id.turno_avversario)
+    ImageView turno_avversario;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +72,10 @@ public class ScreenActivity extends Activity {
         });
         App.gameHelper.registerCurrentActivity(this);
         if(!App.game.getSettings().singlePlayer()) {
-            String message = yourTurn ? getString(string.your_tyrn) : getString(string.opponent_turn);
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            if(yourTurn)
+                turno_giocatore.setVisibility(View.VISIBLE);
+            else
+                turno_avversario.setVisibility(View.VISIBLE);
         }
     }
 
