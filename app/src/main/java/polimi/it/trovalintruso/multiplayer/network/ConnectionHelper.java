@@ -30,7 +30,7 @@ public class ConnectionHelper {
 
     public ConnectionHelper(Handler handler) {
         mUpdateHandler = handler;
-        mMultiPlayerServer = new ServerHelper(handler, this);
+        mMultiPlayerServer = new ServerHelper(this);
     }
 
     public void tearDown() {

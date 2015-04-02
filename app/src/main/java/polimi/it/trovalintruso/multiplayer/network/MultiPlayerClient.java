@@ -1,4 +1,4 @@
-package polimi.it.trovalintruso.multiplayer.network;
+/*package polimi.it.trovalintruso.multiplayer.network;
 
 import android.os.Bundle;
 import android.os.Message;
@@ -17,9 +17,6 @@ import java.util.concurrent.BlockingQueue;
 import polimi.it.trovalintruso.model.Category;
 import polimi.it.trovalintruso.model.GameMessage;
 
-/**
- * Created by poool on 02/03/15.
- */
 class MultiPlayerClient {
     private InetAddress mAddress;
     private int PORT;
@@ -189,3 +186,4 @@ class MultiPlayerClient {
         return true;
     }
 }
+*/

@@ -1,4 +1,4 @@
-package polimi.it.trovalintruso.multiplayer.network;
+/*package polimi.it.trovalintruso.multiplayer.network;
 
 import android.os.Handler;
 import android.util.Log;
@@ -6,9 +6,6 @@ import android.util.Log;
 import java.io.IOException;
 import java.net.ServerSocket;
 
-/**
- * Created by poool on 02/03/15.
- */
 class MultiPlayerServer {
 
     private static final String TAG = "MultiPlayerConnection";
@@ -65,3 +62,5 @@ class MultiPlayerServer {
         }
     }
 }
+
+*/

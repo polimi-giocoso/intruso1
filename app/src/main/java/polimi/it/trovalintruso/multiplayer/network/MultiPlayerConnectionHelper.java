@@ -1,4 +1,4 @@
-package polimi.it.trovalintruso.multiplayer.network;
+/*package polimi.it.trovalintruso.multiplayer.network;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,9 +11,6 @@ import java.net.Socket;
 
 import polimi.it.trovalintruso.model.GameMessage;
 
-/**
- * Created by Paolo on 01/03/2015.
- */
 public class MultiPlayerConnectionHelper {
 
     protected Handler mUpdateHandler;
@@ -119,4 +116,4 @@ public class MultiPlayerConnectionHelper {
         msg.setData(messageBundle);
         mUpdateHandler.sendMessage(msg);
     }
-}
+}*/

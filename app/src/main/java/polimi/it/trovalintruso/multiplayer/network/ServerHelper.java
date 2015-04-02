@@ -17,7 +17,7 @@ public class ServerHelper {
     Thread mThread = null;
     ConnectionHelper mConnection;
 
-    public ServerHelper(Handler handler, ConnectionHelper connection) {
+    public ServerHelper(ConnectionHelper connection) {
         mConnection = connection;
         try {
             mServerSocket = new ServerSocket(0);

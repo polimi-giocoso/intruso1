@@ -121,27 +121,6 @@ public class ClientHelper {
         }
     }
 
-    /*class IsAliveThread implements Runnable {
-
-        @Override
-        public void run() {
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    if (mConnection.getSocket() != null) {
-                        PrintWriter out = new PrintWriter(mConnection.getSocket().getOutputStream(), true);
-                        if (out.checkError()) {
-                            sendCloseMessage();
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-
-                } catch (Exception e) {
-                    Log.e(CLIENT_TAG, "Server loop error: ", e);
-                }
-            }
-        }
-    }*/
-
     public void tearDown() {
         try {
             if(mConnection.getSocket() != null)
