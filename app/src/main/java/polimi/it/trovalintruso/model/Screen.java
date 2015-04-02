@@ -26,8 +26,8 @@ public class Screen implements Parcelable, Serializable {
     private final static long serialVersionUID = 3L;
 
     private ArrayList<Element> _elements;
-    private DateTime _start;
-    private DateTime _end;
+    private DateTime _start_time;
+    private DateTime _end_time;
     private int _incorrectAttempts;
     private boolean _yourTurn;
     private String _deviceName;
@@ -46,9 +46,9 @@ public class Screen implements Parcelable, Serializable {
         return _elements;
     }
 
-    public void set_elements(ArrayList<Element> _elements) {
+    /*public void set_elements(ArrayList<Element> _elements) {
         this._elements = _elements;
-    }
+    }*/
 
     public int getErrors() {
         return _incorrectAttempts;
@@ -68,27 +68,22 @@ public class Screen implements Parcelable, Serializable {
     }
 
     public DateTime getStart() {
-        return _start;
+        return _start_time;
     }
 
     public void setStart(DateTime value) {
-        _start = value;
+        _start_time = value;
     }
 
     public DateTime getEnd() {
-        return _end;
+        return _end_time;
     }
 
     public void setEnd(DateTime value) {
-        _end = value;
+        _end_time = value;
     }
 
     //game methods
-
-    /*public void initialize(ArrayList<Element> objects) {
-        _elements = objects;
-        initialize();
-    }*/
 
     public void initialize(CategoryGroup group, int numOfObjects) {
         _elements = new ArrayList<Element>();
@@ -98,22 +93,19 @@ public class Screen implements Parcelable, Serializable {
         for(int i = 0; i < numOfObjects - 1; i++) {
             _elements.add(new Element(false, others.get(i)));
         }
-        /*for(String s : group.getOthers()) {
-            _elements.add(new Element(false, s));
-        }*/
         Collections.shuffle(_elements, new Random());
-        initialize();
+        init();
     }
 
-    public void initialize() {
-        _start = null;
-        _end = null;
+    public void init() {
+        _start_time = null;
+        _end_time = null;
         _incorrectAttempts = 0;
         _yourTurn = true;
     }
 
     public void start() {
-        _start = new DateTime();
+        _start_time = new DateTime();
     }
 
     public void error() {
@@ -121,11 +113,11 @@ public class Screen implements Parcelable, Serializable {
     }
 
     public void completed() {
-        _end = new DateTime();
+        _end_time = new DateTime();
     }
 
     public Interval getScreenTime() {
-        return new Interval(_start.getMillis(), _end.getMillis());
+        return new Interval(_start_time.getMillis(), _end_time.getMillis());
     }
 
     public String getParsedScreenTime(Context context) {
@@ -168,15 +160,15 @@ public class Screen implements Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(_start);
-        dest.writeValue(_end);
+        dest.writeValue(_start_time);
+        dest.writeValue(_end_time);
         dest.writeInt(_incorrectAttempts);
         dest.writeList(_elements);
     }
 
     private void readFromParcel(Parcel in ) {
-        _start = (DateTime) in.readValue(DateTime.class.getClassLoader());
-        _end = (DateTime) in.readValue(DateTime.class.getClassLoader());
+        _start_time = (DateTime) in.readValue(DateTime.class.getClassLoader());
+        _end_time = (DateTime) in.readValue(DateTime.class.getClassLoader());
         _incorrectAttempts = in.readInt();
         _elements = in.readArrayList(Element.class.getClassLoader());
     }

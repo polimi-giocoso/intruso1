@@ -4,12 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.media.Image;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +14,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import polimi.it.trovalintruso.multiplayer.EmailHelper;
+import polimi.it.trovalintruso.helpers.EmailHelper;
 import polimi.it.trovalintruso.ui.ResultsAdapter;
 
 
@@ -91,7 +88,7 @@ public class ResultsActivity extends Activity {
             if(email != null && !email.isEmpty() && password != null && !password.isEmpty() && to != null && !to.isEmpty()) {
                 EmailHelper sender = new EmailHelper(email, password, context);
                 sender.sendMail("Tova Intruso 1 - Risultato",
-                        App.game.GameToString(context),
+                        App.game.CreateGameDescription(context),
                         email,
                         to);
             }

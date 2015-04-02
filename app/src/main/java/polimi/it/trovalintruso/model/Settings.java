@@ -23,25 +23,16 @@ public class Settings implements Parcelable, Serializable {
 
     private final static long serialVersionUID = 4L;
 
-    //public static enum ObjectsForPage { Four, Five, Six }
-
-    //public static enum Category { Casuale, Colori, Forme}
-
     private int _numOfObjects;
     private int _numOfScreens;
-    //private Boolean _timeLimitEnabled;
-    //private int _timeLimit;
-    private Boolean _randomCategory;
+    //private Boolean _randomCategory;
     private Category _category;
     private Boolean _singlePlayer;
 
-    public Settings(Context context) {
+    public Settings() {
         _numOfObjects = 4;
         _numOfScreens = 2;
-        _randomCategory = false;
-        //_timeLimitEnabled = false;
-        //_timeLimit = 0;
-
+        //_randomCategory = false;
     }
 
     public Category getCategory() {
@@ -52,13 +43,13 @@ public class Settings implements Parcelable, Serializable {
         _category = category;
     }
 
-    public Boolean getRandomCategory() {
+    /*public Boolean getRandomCategory() {
         return _randomCategory;
     }
 
     public void setRandomCategory(Boolean random) {
         _randomCategory = random;
-    }
+    }*/
 
     public int getNumOfObjects() {
         return _numOfObjects;
@@ -68,14 +59,6 @@ public class Settings implements Parcelable, Serializable {
         this._numOfObjects = numOfObjects;
     }
 
-    /* Boolean getTimeLimitEnabled() {
-        return _timeLimitEnabled;
-    }
-
-    public void setTimeLimitEnabled(Boolean timeLimit) {
-        this._timeLimitEnabled = timeLimit;
-    }*/
-
     public int getNumOfScreens() {
         return _numOfScreens;
     }
@@ -83,14 +66,6 @@ public class Settings implements Parcelable, Serializable {
     public void setNumOfScreens(int numOfScreens) {
         this._numOfScreens = numOfScreens;
     }
-
-    /*public int get_timeLimit() {
-        return _timeLimit;
-    }
-
-    public void set_timeLimit(int _timeLimit) {
-        this._timeLimit = _timeLimit;
-    }*/
 
     public Boolean singlePlayer() {
         return _singlePlayer;

@@ -16,12 +16,12 @@ import polimi.it.trovalintruso.model.Category;
 /**
  * Created by Paolo on 10/02/2015.
  */
-public class CategoryManager {
+public class CategoryHelper {
 
     private ArrayList<Category> _categoryList4;
     private ArrayList<Category> _categoryList6;
 
-    public CategoryManager(Context context) {
+    public CategoryHelper(Context context) {
         _categoryList4 = new ArrayList<Category>();
         _categoryList6 = new ArrayList<>();
         try {

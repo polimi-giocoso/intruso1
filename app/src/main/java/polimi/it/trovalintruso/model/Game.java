@@ -14,6 +14,8 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import polimi.it.trovalintruso.App;
@@ -38,15 +40,15 @@ public class Game implements Parcelable, Serializable {
         return _settings;
     }
 
-    //methods
+    public ArrayList<Screen> getScreens() {
+        return _screens;
+    }
 
     public String getGameTime(Context context) {
         Duration i = _screens.get(0).getScreenTime().toDuration();
         for(int x = 1; x < _screens.size(); x++) {
             i = i.plus(_screens.get(x).getScreenTime().toDuration());
         }
-        //Interval i = new Interval(getScreens().get(0).getScreenTime().getStart(),
-        //        getScreens().get(getScreens().size()-1).getScreenTime().getEnd());
         PeriodFormatter formatter = new PeriodFormatterBuilder()
                 .appendMinutes()
                 .appendSuffix(" " + context.getString(R.string.minute), " " +  context.getString(R.string.minutes))
@@ -61,22 +63,7 @@ public class Game implements Parcelable, Serializable {
         return _screens.get(_activeScreen);
     }
 
-    public ArrayList<Screen> getScreens() {
-        return _screens;
-    }
-
-    public Boolean goToNextScreen() {
-        if(_activeScreen < _settings.getNumOfScreens() - 1) {
-            _activeScreen++;
-            return true;
-        }
-        else
-            return false;
-    }
-
-    public Boolean isLastScreen(){
-        return _activeScreen == _settings.getNumOfScreens() - 1;
-    }
+    //methods
 
     public void initialize() {
         //create the screens
@@ -86,7 +73,6 @@ public class Game implements Parcelable, Serializable {
             Screen screen = new Screen();
             _screens.add(screen);
         }
-        //DemoData();
         fillScreens();
         _activeScreen = 0;
     }
@@ -110,29 +96,49 @@ public class Game implements Parcelable, Serializable {
         }
     }
 
+    public Boolean goToNextScreen() {
+        if(_activeScreen < _settings.getNumOfScreens() - 1) {
+            _activeScreen++;
+            return true;
+        }
+        else
+            return false;
+    }
+
     private void fillScreens() {
         Random rand = new Random();
         if(_settings.getCategory().getRandom()) {
-            ArrayList<Category> categories;
+            List<Category> categories;
             if(_settings.getNumOfObjects() == 4)
                 categories = App.getCategoryManager().getCategoryList4();
             else
                 categories = App.getCategoryManager().getCategoryList6();
-            HashMap<Integer, ArrayList<Integer>> used = new HashMap<Integer, ArrayList<Integer>>();
+            //Map<Integer, List<Integer>> used = new HashMap();
+            Map<Integer, List<Integer>> free = new HashMap();
+            for(int i = 0; i < categories.size(); i++) {
+                free.put(i, new ArrayList());
+                for(int j = 0; j < categories.get(i).getGroups().size(); j++) {
+                    free.get(i).add(j);
+                }
+            }
             for(int i = 0; i < _settings.getNumOfScreens(); i++) {
                 int max1 = categories.size() - 1;
-                int min1 = 1; //at position 0 there is random category
+                int min1 = 1;
                 int randomCat = rand.nextInt((max1 - min1) + 1) + min1;
-                if(!used.keySet().contains(randomCat))
-                    used.put(randomCat, new ArrayList<Integer>());
+                while(free.get(randomCat).size() == 0) {
+                    randomCat = rand.nextInt((max1 - min1) + 1) + min1;
+                }
                 Category category = categories.get(randomCat);
-                ArrayList<CategoryGroup> groups = category.getGroups();
-                int max = groups.size() - 1;
+                List<CategoryGroup> groups = category.getGroups();
+                int max = free.get(randomCat).size() - 1;
                 int min = 0;
-                int random = rand.nextInt((max - min) + 1) + min;
-                while(used.get(randomCat).contains(random))
-                    random = rand.nextInt((max - min) + 1) + min;
-                CategoryGroup cg = groups.get(random);
+                int random = max == 0 ? 0 : rand.nextInt((max - min) + 1) + min;
+                //while(used.get(randomCat).contains(random))
+                    //random = rand.nextInt((max - min) + 1) + min;
+                Integer groupIndex = free.get(randomCat).get(random);
+                //used.get(randomCat).add(groupIndex);
+                free.get(randomCat).remove(random);
+                CategoryGroup cg = groups.get(groupIndex);
                 Screen screen = _screens.get(i);
                 screen.initialize(cg, _settings.getNumOfObjects());
             }
@@ -155,10 +161,7 @@ public class Game implements Parcelable, Serializable {
         }
     }
 
-
-
-    public String GameToString(Context context) {
-        //holder.time.setText("" + formatter.print(s.getScreenTime().toPeriod()));
+    public String CreateGameDescription(Context context) {
         String body = "";
         int level = 1;
         if(App.game.getSettings().singlePlayer())
@@ -186,6 +189,13 @@ public class Game implements Parcelable, Serializable {
         body += "\n";
         body += context.getString(R.string.game_time) + " " + App.game.getGameTime(context);
         return body;
+    }
+
+    public void restart() {
+        _activeScreen = 0;
+        for(Screen s : _screens) {
+            s.init();
+        }
     }
 
     //parcelable implementation
@@ -221,22 +231,49 @@ public class Game implements Parcelable, Serializable {
         _settings = in.readParcelable(Settings.class.getClassLoader());
     }
 
-    public void restart() {
-        _activeScreen = 0;
-        for(Screen s : _screens) {
-            s.initialize();
+    /*private void fillScreensOld() {
+        Random rand = new Random();
+        if(_settings.getCategory().getRandom()) {
+            List<Category> categories;
+            if(_settings.getNumOfObjects() == 4)
+                categories = App.getCategoryManager().getCategoryList4();
+            else
+                categories = App.getCategoryManager().getCategoryList6();
+            Map<Integer, List<Integer>> used = new HashMap();
+            for(int i = 0; i < _settings.getNumOfScreens(); i++) {
+                int max1 = categories.size() - 1;
+                int min1 = 1; //at position 0 there is random category
+                int randomCat = rand.nextInt((max1 - min1) + 1) + min1;
+                if(!used.keySet().contains(randomCat))
+                    used.put(randomCat, new ArrayList());
+                Category category = categories.get(randomCat);
+                List<CategoryGroup> groups = category.getGroups();
+                int max = groups.size() - 1;
+                int min = 0;
+                int random = rand.nextInt((max - min) + 1) + min;
+                while(used.get(randomCat).contains(random))
+                    random = rand.nextInt((max - min) + 1) + min;
+                used.get(randomCat).add(random);
+                CategoryGroup cg = groups.get(random);
+                Screen screen = _screens.get(i);
+                screen.initialize(cg, _settings.getNumOfObjects());
+            }
         }
-    }
-
-
-    /*public JSONObject getJsonObject() throws JSONException {
-        JSONObject obj = new JSONObject();
-        obj.put("activeScreen", _activeScreen);
-        JSONArray arr = new JSONArray();
-        for(Screen s : _screens) {
-            //arr.put(s.getJsonObject());
+        else {
+            Category category = _settings.getCategory();
+            ArrayList<CategoryGroup> groups = category.getGroups();
+            ArrayList<Integer> used = new ArrayList<Integer>();
+            for(int i = 0; i < _settings.getNumOfScreens(); i++) {
+                int max = groups.size() - 1;
+                int min = 0;
+                int random = rand.nextInt((max - min) + 1) + min;
+                while(used.contains(random))
+                    random = rand.nextInt((max - min) + 1) + min;
+                used.add(random);
+                CategoryGroup cg = groups.get(random);
+                Screen screen = _screens.get(i);
+                screen.initialize(cg, _settings.getNumOfObjects());
+            }
         }
-        obj.put("settings", _settings.getJsonObject());
-        return obj;
     }*/
 }

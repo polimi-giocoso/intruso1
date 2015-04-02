@@ -3,6 +3,10 @@ package polimi.it.trovalintruso;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.speech.tts.TextToSpeech;
 import android.os.Bundle;
 import android.widget.Button;
@@ -22,6 +26,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
+import polimi.it.trovalintruso.helpers.BitmapWorkerTask;
+import polimi.it.trovalintruso.helpers.ImageCacheHelper;
 import polimi.it.trovalintruso.model.Element;
 import polimi.it.trovalintruso.model.Screen;
 
@@ -36,6 +42,7 @@ public class ScreenActivity extends Activity {
     private boolean yourTurn;
     private TextToSpeech ttobj;
     private ArrayList<ImageView> _imageList;
+    private ImageCacheHelper mCacheHelper;
 
     @InjectView(R.id.game_layout1)
     LinearLayout layout1;
@@ -55,6 +62,7 @@ public class ScreenActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mCacheHelper = App.gameHelper.getImageCacheHelper();
         setContentView(R.layout.activity_screen);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         context = this;
@@ -119,6 +127,19 @@ public class ScreenActivity extends Activity {
         App.gameHelper.nextScreen();
     }
 
+    private void loadBitmap(int resId, ImageView imageView) {
+        final String imageKey = String.valueOf(resId);
+
+        final Bitmap bitmap = mCacheHelper.getBitmapFromMemCache(imageKey);
+        if (bitmap != null) {
+            imageView.setImageBitmap(bitmap);
+        } else {
+            imageView.setImageResource(resId);
+            BitmapWorkerTask task = new BitmapWorkerTask(imageView, context);
+            task.execute(resId);
+        }
+    }
+
     private void populateGameArea() {
         _imageList = new ArrayList<>();
         Screen s = App.game.getActiveScreen();
@@ -126,7 +147,14 @@ public class ScreenActivity extends Activity {
         for(int i = 0; i < num; i++) {
             Element el = s.get_elements().get(i);
             ImageView image = new ImageView(context);
-            image.setImageResource(context.getResources().getIdentifier(el.get_drawable_name(), "drawable", context.getPackageName()));
+            /*BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeResource(getResources(), context.getResources().getIdentifier(el.get_drawable_name(), "drawable", context.getPackageName()), options);
+            int imageHeight = options.outHeight;
+            int imageWidth = options.outWidth;
+            String imageType = options.outMimeType;*/
+            loadBitmap(context.getResources().getIdentifier(el.get_drawable_name(), "drawable", context.getPackageName()), image);
+            //image.setImageResource(context.getResources().getIdentifier(el.get_drawable_name(), "drawable", context.getPackageName()));
             image.setTag(i);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             if(num % 2 == 0) {

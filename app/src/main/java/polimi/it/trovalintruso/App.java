@@ -2,30 +2,25 @@ package polimi.it.trovalintruso;
 
 import android.app.Application;
 
-import polimi.it.trovalintruso.helpers.CategoryManager;
+import polimi.it.trovalintruso.helpers.CategoryHelper;
 import polimi.it.trovalintruso.model.Game;
 import polimi.it.trovalintruso.model.Settings;
-import polimi.it.trovalintruso.multiplayer.GameHelper;
+import polimi.it.trovalintruso.helpers.GameHelper;
 
 /**
  * Created by poool on 01/03/15.
  */
 public class App extends Application {
 
-    //public static MultiPlayerServiceHelper multiPlayerServiceHelper;
-    //public static MultiPlayerConnectionHelper mConnection;
     public static GameHelper gameHelper;
-
     public static Game game;
-
     public static Settings gameSettings = null;
-
-    private static CategoryManager _categoryManager;
+    private static CategoryHelper _categoryHelper;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        _categoryManager = new CategoryManager(getBaseContext());
+        _categoryHelper = new CategoryHelper(getBaseContext());
         App.gameHelper = new GameHelper(getBaseContext());
     }
 
@@ -35,7 +30,7 @@ public class App extends Application {
         gameHelper.onAppTerminate();
     }
 
-    public static CategoryManager getCategoryManager() {
-        return _categoryManager;
+    public static CategoryHelper getCategoryManager() {
+        return _categoryHelper;
     }
 }

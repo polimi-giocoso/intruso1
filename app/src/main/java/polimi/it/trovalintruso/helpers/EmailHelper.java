@@ -1,4 +1,4 @@
-package polimi.it.trovalintruso.multiplayer;
+package polimi.it.trovalintruso.helpers;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -23,6 +23,7 @@ import java.util.Properties;
 import polimi.it.trovalintruso.App;
 import polimi.it.trovalintruso.R;
 import polimi.it.trovalintruso.model.Screen;
+import polimi.it.trovalintruso.multiplayer.JSSEProvider;
 
 /**
  * Created by poool on 11/03/15.

@@ -1,4 +1,4 @@
-package polimi.it.trovalintruso.multiplayer;
+package polimi.it.trovalintruso.helpers;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -33,6 +33,7 @@ import polimi.it.trovalintruso.model.Device;
 import polimi.it.trovalintruso.model.Game;
 import polimi.it.trovalintruso.model.GameMessage;
 import polimi.it.trovalintruso.model.Settings;
+import polimi.it.trovalintruso.multiplayer.MultiPlayerServiceHelper;
 import polimi.it.trovalintruso.multiplayer.network.Base64Coder;
 import polimi.it.trovalintruso.multiplayer.network.ConnectionHelper;
 import polimi.it.trovalintruso.network.MultiPlayerDiscoveryActivity;
@@ -53,7 +54,10 @@ public class GameHelper {
     private String deviceName;
     private boolean isServer;
 
+    private ImageCacheHelper mCacheHelper;
+
     public GameHelper(Context context) {
+        mCacheHelper = new ImageCacheHelper();
         mContext = context;
         mHandler = new MultiPlayerHandler();
     }
@@ -69,6 +73,10 @@ public class GameHelper {
         } else {
             Log.d(multiPlayerServiceHelper.TAG, "ServerSocket isn't bound.");
         }
+    }
+
+    public ImageCacheHelper getImageCacheHelper() {
+        return mCacheHelper;
     }
 
     public boolean isServer() {
@@ -299,7 +307,6 @@ public class GameHelper {
     public void quitGame() {
         App.game.restart();
         if(!App.game.getSettings().singlePlayer()) {
-            //mConnection.isConnected = false;
             mConnection.disconnectClient();
         }
         Intent intent = new Intent(mContext, MainActivity.class);

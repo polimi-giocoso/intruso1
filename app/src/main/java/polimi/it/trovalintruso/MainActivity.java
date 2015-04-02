@@ -50,13 +50,6 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         App.gameHelper.onActivityResume(this);
-        /*App.mConnection.setmUpdateHandler(new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                GameMessage message = (GameMessage) msg.getData().getSerializable("message");
-
-            }
-        });*/
     }
 
     @Override
@@ -77,7 +70,7 @@ public class MainActivity extends Activity {
     private void initializeGame() {
         if(App.gameSettings == null) {
             categories4 = App.getCategoryManager().getCategoryList4();
-            App.gameSettings = new Settings(context);
+            App.gameSettings = new Settings();
             App.gameSettings.set_singlePlayer(true);
             App.gameSettings.setCategory(categories4.get(0));
             App.gameSettings.setNumOfObjects(4);
