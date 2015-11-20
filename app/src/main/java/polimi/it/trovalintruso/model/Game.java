@@ -169,6 +169,18 @@ public class Game implements Parcelable, Serializable {
         else
             body += context.getString(R.string.game_multi_player);
         body += "\n";
+        body += context.getString(R.string.category);
+        body += " ";
+        body += App.game.getSettings().getCategory().getName();
+        body += "\n";
+        body += context.getString(R.string.num_of_screens);
+        body += " ";
+        body += App.game.getSettings().getNumOfScreens();
+        body += "\n";
+        body += context.getString(R.string.num_of_objects);
+        body += " ";
+        body += App.game.getSettings().getNumOfObjects();
+        body += "\n";
         body += "\n";
         body += "\n";
         for(Screen s : App.game.getScreens()) {

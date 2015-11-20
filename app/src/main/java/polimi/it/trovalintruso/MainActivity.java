@@ -3,7 +3,6 @@ package polimi.it.trovalintruso;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Button;
@@ -25,7 +24,6 @@ public class MainActivity extends Activity {
 
     private ArrayList<Category> categories4;
     Context context;
-    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +31,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         context = this;
-        sharedPref = getApplicationContext()
-                .getSharedPreferences("settings", Context.MODE_PRIVATE);
         App.gameHelper.onMainActivityCreate();
         initializeGame();
         initializeUI();

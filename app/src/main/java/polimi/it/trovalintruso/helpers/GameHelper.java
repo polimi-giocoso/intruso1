@@ -278,7 +278,7 @@ public class GameHelper {
 
     public void startGame() {
         App.game.initialize();
-        try {
+        /*try {
             String s = toString(App.gameSettings);
             if(s != null) {
                 SharedPreferences sharedPref = mContext.getApplicationContext()
@@ -287,7 +287,7 @@ public class GameHelper {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         Intent intent;
         if(App.game.getSettings().singlePlayer())
             intent = new Intent(mContext, ScreenActivity.class);
